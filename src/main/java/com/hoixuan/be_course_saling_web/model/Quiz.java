@@ -11,6 +11,4 @@ public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idQuiz;
-    @OneToMany
-    private List<Question> question;
 }

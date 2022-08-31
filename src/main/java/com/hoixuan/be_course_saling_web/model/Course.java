@@ -24,6 +24,7 @@ public class Course {
     @NotBlank
     private double priceCourse;
     @NotBlank
+    @Column(length = 10000)
     private String descriptionCourse;
     private int timeCourse;
     @ManyToOne
@@ -31,8 +32,6 @@ public class Course {
     private int quantity = 0;
     private boolean statusCourse = true;
     private int numRating;
-    @OneToMany
-    private List<Lesson> lessons;
     @OneToOne
     private Quiz quiz;
     @OneToOne

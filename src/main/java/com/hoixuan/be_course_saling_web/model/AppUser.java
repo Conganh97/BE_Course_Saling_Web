@@ -45,7 +45,5 @@ public class AppUser {
     private String description;
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private Set<Role> roles;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    private Set<Certificate> certificates;
-    private boolean status;
+    private boolean status = true;
 }

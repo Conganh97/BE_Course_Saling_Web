@@ -18,4 +18,7 @@ public class Lesson {
     @NotBlank
     private String linkVideo;
     private String timeLesson;
+    @ManyToOne
+    private Course course;
+
 }

@@ -2,10 +2,7 @@ package com.hoixuan.be_course_saling_web.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -26,4 +23,6 @@ public class Question {
     private String D;
     @NotBlank
     private String answer;
+    @ManyToOne
+    private Quiz quiz;
 }

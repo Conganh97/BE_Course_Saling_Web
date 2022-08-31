@@ -15,4 +15,6 @@ public class Certificate {
     private String nameCertificate;
     @NotBlank
     private String imageCertificate;
+    @ManyToOne
+    private AppUser appUser;
 }
