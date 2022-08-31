@@ -1,8 +1,8 @@
 package com.hoixuan.be_course_saling_web.config.filter;
 
 
-import com.teamone.socialmediaproject.service.AppUserService;
-import com.teamone.socialmediaproject.service.JwtService;
+import com.hoixuan.be_course_saling_web.service.AppUserService;
+import com.hoixuan.be_course_saling_web.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
