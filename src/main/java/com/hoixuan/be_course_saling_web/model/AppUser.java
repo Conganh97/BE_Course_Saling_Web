@@ -35,7 +35,6 @@ public class AppUser {
     private String email;
     @NotBlank
     private String address;
-    @NotBlank
     private Date dateOfBirth;
     @NotBlank
     private String phone;

@@ -18,7 +18,7 @@ public class AppUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser appUser = iAppUserRepo.findByUserName(username);
+        AppUser appUser = iAppUserRepo.findByUserNameS(username);
         return new User(appUser.getUserName(), appUser.getPassword(), appUser.getRoles());
     }
     public List<AppUser> getAll(){
@@ -32,5 +32,9 @@ public class AppUserService implements UserDetailsService {
 
     public AppUser save(AppUser appUser){
         return iAppUserRepo.save(appUser);
+    }
+
+    public void delete(long id){
+     iAppUserRepo.deleteById(id);
     }
 }
