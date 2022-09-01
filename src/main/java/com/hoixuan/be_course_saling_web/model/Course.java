@@ -23,6 +23,8 @@ public class Course {
     private String nameCourse;
     @NotBlank
     private double priceCourse;
+    private String imgCourse;
+    private int enrolled;
     @NotBlank
     @Column(length = 10000)
     private String descriptionCourse;
@@ -34,6 +36,4 @@ public class Course {
     private int numRating;
     @OneToOne
     private Quiz quiz;
-    @OneToOne
-    private Certificate certificate;
 }

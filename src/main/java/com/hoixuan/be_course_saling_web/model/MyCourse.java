@@ -21,4 +21,6 @@ public class MyCourse {
     private boolean statusMyCourse = true;
     @OneToMany
     private Set<Lesson> lessonList;
+    @OneToOne
+    private Certificate certificate;
 }
