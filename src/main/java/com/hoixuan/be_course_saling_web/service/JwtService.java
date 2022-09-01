@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 @Service
 public class JwtService {
@@ -36,5 +37,12 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody().getSubject();
         return userName;
+    }
+    public String getJwt(HttpServletRequest request){
+        String authHeader = request.getHeader("Authorization");
+        if(authHeader != null && authHeader.startsWith("Bearer")){
+            return authHeader.replace("Bearer","");
+        }
+        return  null;
     }
 }
