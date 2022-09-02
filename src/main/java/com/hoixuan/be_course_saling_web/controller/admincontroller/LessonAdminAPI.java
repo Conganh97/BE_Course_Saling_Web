@@ -31,4 +31,15 @@ public class LessonAdminAPI {
         lesson.setCourse(course);
         return new ResponseEntity<>(lessonService.save(lesson), HttpStatus.OK);
     }
+    @GetMapping("/lesson/delete/{id}")
+    public ResponseEntity<Lesson> deleteLesson(@PathVariable long id) {
+        Lesson lesson = lessonService.findById(id);
+        lesson.setCourse(null);
+        return new ResponseEntity<>(lessonService.save(lesson), HttpStatus.OK);
+    }
+    @GetMapping("/lesson/find/{id}")
+    public ResponseEntity<Lesson> findById(@PathVariable long id) {
+        return new ResponseEntity<>(lessonService.findById(id), HttpStatus.OK);
+    }
+
 }
