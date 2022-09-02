@@ -10,32 +10,29 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserService implements IUserService {
+public  class UserService implements IUserService {
     @Autowired
     UserRepository userRepository;
 
     @Override
-    public Page<AppUser> getAll(Pageable pageable) {
-        return userRepository.findAll(pageable);
-    }
-
-    @Override
     public Iterable<AppUser> findAll() {
-        return null;
+        return userRepository.findAll();
     }
 
     @Override
     public Optional<AppUser> findById(Long id) {
-        return Optional.empty();
+        return userRepository.findById(id);
     }
+
+
 
     @Override
     public AppUser save(AppUser appUser) {
-        return null;
+        return userRepository.save(appUser);
     }
 
     @Override
-    public void remove(Long id) {
-
+    public void remove(Long idUser) {
+        userRepository.deleteById(idUser);
     }
 }
