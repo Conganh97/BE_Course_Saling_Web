@@ -24,4 +24,25 @@ public class CourseAdminAPI {
         Page<Course> coursePage = courseService.getAll(PageRequest.of(page, 5, Sort.by("nameCourse")));
         return  new ResponseEntity<>(coursePage, HttpStatus.OK);
     }
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Course> findById(@PathVariable(required = true) int id) {
+      return new ResponseEntity<>(courseService.findById(id),HttpStatus.OK);
+    }
+    @PostMapping("/saveCourse")
+    public ResponseEntity<Course> save(@RequestBody Course course) {
+        System.out.println(course);
+        return new ResponseEntity<>(courseService.save(course),HttpStatus.OK);
+    }
+    @GetMapping("/disable/{id}")
+    public ResponseEntity<Course> disable(@PathVariable(required = true) int id) {
+       Course course= courseService.findById(id);
+       course.setStatusCourse(false);
+       return new ResponseEntity<>(courseService.save(course),HttpStatus.OK);
+    }
+    @GetMapping("/activated/{id}")
+    public ResponseEntity<Course> activated(@PathVariable(required = true) int id) {
+        Course course= courseService.findById(id);
+        course.setStatusCourse(true);
+        return new ResponseEntity<>(courseService.save(course),HttpStatus.OK);
+    }
 }

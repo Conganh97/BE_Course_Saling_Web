@@ -11,11 +11,8 @@ public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idLesson;
-    @NotBlank
     private String nameLesson;
-    @NotBlank
     private String contentLesson;
-    @NotBlank
     private String linkVideo;
     private String timeLesson;
     @ManyToOne

@@ -14,4 +14,10 @@ public class CourseService {
     public Page<Course> getAll(Pageable pageable){
         return iCourseRepo.findAll(pageable);
     }
+    public Course findById(long id){
+        return iCourseRepo.findByIdCourse(id);
+    }
+    public Course save(Course course){
+        return iCourseRepo.save(course);
+    }
 }
