@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserAPI {
 
     @Autowired
@@ -29,6 +29,12 @@ public class UserAPI {
     @Autowired
     JwtService jwtService;
 
+    @GetMapping("")
+    public ResponseEntity<AppUser> getProfile (){
+//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
+        return new ResponseEntity<AppUser>(appUserService.findByUserName("conganh"),HttpStatus.OK);
+    }
 
     @PutMapping("/change-profile")
     public ResponseEntity<AppUser> changeProfile(@RequestBody ChangeProfileUser changeProfileUser){
