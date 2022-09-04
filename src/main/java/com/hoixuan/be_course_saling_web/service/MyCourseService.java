@@ -24,8 +24,8 @@ public class MyCourseService {
     }
 
     public long findIdUser () {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return appUserService.findByUserName(userDetails.getUsername()).getIdUser();
+//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return appUserService.findByUserName("conganh").getIdUser();
     }
 
 

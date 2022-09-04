@@ -17,4 +17,10 @@ public class LessonService {
     public Lesson save(Lesson lesson){
         return iLessonRepo.save(lesson);
     }
+    public Lesson findById(long id){
+        return iLessonRepo.findById(id).get();
+    }
+    public void deleteById(long id){
+        iLessonRepo.deleteById(id);
+    }
 }

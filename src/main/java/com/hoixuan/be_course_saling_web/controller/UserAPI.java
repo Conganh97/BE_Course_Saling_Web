@@ -36,10 +36,10 @@ public class UserAPI {
         return new ResponseEntity<AppUser>(appUserService.findByUserName("conganh"),HttpStatus.OK);
     }
 
-    @PutMapping("/change-profile")
+    @PostMapping("/change-profile")
     public ResponseEntity<AppUser> changeProfile(@RequestBody ChangeProfileUser changeProfileUser){
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
+//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser =appUserService.findByUserName("conganh");
 
         appUser.setFullName(changeProfileUser.getFullName());
         appUser.setAddress(changeProfileUser.getAddress());
@@ -47,14 +47,15 @@ public class UserAPI {
         appUser.setPhone(changeProfileUser.getPhone());
         appUser.setDescription(changeProfileUser.getDescription());
         appUser.setUserName(changeProfileUser.getUserName());
+        appUser.setEmail(changeProfileUser.getEmail());
         appUserService.save(appUser);
         return new ResponseEntity<>(appUser, HttpStatus.OK);
     }
 
-    @PutMapping("/change-avatar")
+    @PostMapping("/change-avatar")
     public ResponseEntity<AppUser> changeAvatar(@RequestBody ChangeAvatar changeAvatar){
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
+//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser =appUserService.findByUserName("conganh");
 
         appUser.setAvatarSrc(changeAvatar.getAvatar());
         appUserService.save(appUser);
@@ -62,8 +63,8 @@ public class UserAPI {
     }
     @PostMapping("/change-password")
     public ResponseEntity<AppUser> changePassword(@RequestBody ChangePassword changePassword) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
+//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser = appUserService.findByUserName("conganh");
         String newPassword;
         String oldPassword = changePassword.getOldPassword();
         if (oldPassword.equals(appUser.getPassword())) {

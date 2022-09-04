@@ -5,6 +5,8 @@ import com.hoixuan.be_course_saling_web.model.Rating;
 import com.hoixuan.be_course_saling_web.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +29,20 @@ public class RatingAdminAPI {
         rating.setStatusRating(true);
         return ratingService.save(rating);
     }
+    @GetMapping("/rating/disable/{id}")
+    public Rating disable(@PathVariable long id){
+        Rating rating = ratingService.findById(id);
+        rating.setStatusRating(false);
+        return ratingService.save(rating);
+    }
     @GetMapping("/rating/delete/{id}")
     public Rating deleteById(@PathVariable long id){
         ratingService.delete(id);
         return new Rating();
+    }
+    @GetMapping("/allRating/{page}")
+    public ResponseEntity<Page<Rating>>getAllFalse(@PathVariable int page){
+        Page<Rating> ratings = ratingService.getAll(PageRequest.of(page, 5,Sort.by("timeRating").descending()));
+        return  new ResponseEntity<>(ratings, HttpStatus.OK);
     }
 }

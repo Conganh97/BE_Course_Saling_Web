@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 @Entity
 @Data
@@ -14,6 +15,7 @@ public class Rating {
     private String contentRating;
     private int numStar;
     private boolean statusRating;
+    private Date timeRating;
     @ManyToOne
     private AppUser appUser;
     @ManyToOne
