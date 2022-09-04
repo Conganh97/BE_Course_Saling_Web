@@ -27,4 +27,9 @@ public class MyCourseAPI {
         return new ResponseEntity<>(myCourses, HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/myCourseLearn/{idCourse}")
+    public ResponseEntity<MyCourse> getMyCourseLearn(@PathVariable long idCourse){
+        return new ResponseEntity<>(myCourseService.findMyCourseLearn(idCourse),HttpStatus.OK);
+    }
+
 }

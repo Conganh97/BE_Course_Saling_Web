@@ -12,4 +12,6 @@ import java.util.List;
 public interface IMyCourseRepo extends CrudRepository<MyCourse, Long> {
     @Query(nativeQuery = true,value = "select * from my_course where app_user_id_user = :idUser order by expire desc")
     List<MyCourse> findAllMyCourseById(@Param("idUser") long idUser);
+
+    MyCourse findMyCourseByAppUserIdUserAndCourseIdCourse (long idUser, long idCourse);
 }

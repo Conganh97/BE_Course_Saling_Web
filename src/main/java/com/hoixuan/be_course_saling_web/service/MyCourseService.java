@@ -28,5 +28,9 @@ public class MyCourseService {
         return appUserService.findByUserName("conganh").getIdUser();
     }
 
+    public MyCourse findMyCourseLearn (long idCourse){
+        return iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(appUserService.findByUserName("conganh").getIdUser(),idCourse);
+    }
+
 
 }
