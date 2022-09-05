@@ -30,6 +30,14 @@ public class AppUserService implements UserDetailsService {
         return appUser;
     }
 
+    public boolean ifEmailExist(String mail){
+        return iAppUserRepo.existsByEmail(mail);
+    }
+
+    public AppUser getUserByMail(String mail){
+        return iAppUserRepo.findByEmail(mail);
+    }
+
     public AppUser save(AppUser appUser){
         return iAppUserRepo.save(appUser);
     }

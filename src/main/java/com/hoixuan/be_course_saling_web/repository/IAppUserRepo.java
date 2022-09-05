@@ -10,4 +10,8 @@ public interface IAppUserRepo extends CrudRepository<AppUser, Long> {
     AppUser findByUserNameS(@Param("name") String name);
 
     AppUser findByUserName(String name);
+
+    public AppUser findByEmail(String email);
+
+    public boolean existsByEmail(String email);
 }
