@@ -1,5 +1,6 @@
 package com.hoixuan.be_course_saling_web.service;
 
+import com.hoixuan.be_course_saling_web.model.Lesson;
 import com.hoixuan.be_course_saling_web.model.MyCourse;
 import com.hoixuan.be_course_saling_web.repository.IMyCourseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class MyCourseService {
 
     @Autowired
     AppUserService appUserService;
+    @Autowired
+    LessonService lessonService;
 
 
     public List<MyCourse> findAllMyCourseByIdUser (long idUser){
@@ -32,5 +35,11 @@ public class MyCourseService {
         return iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(appUserService.findByUserName("conganh").getIdUser(),idCourse);
     }
 
+    public MyCourse learned (long idMyCourse,long idLesson){
+        Lesson lesson = lessonService.findById(idLesson);
+        MyCourse myCourse = iMyCourseRepo.findMyCourseByIdMyCourse(idMyCourse);
+        myCourse.getLessonList().add(lesson);
+        return iMyCourseRepo.save(myCourse);
+    }
 
 }

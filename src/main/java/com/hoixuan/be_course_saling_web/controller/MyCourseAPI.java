@@ -1,6 +1,8 @@
 package com.hoixuan.be_course_saling_web.controller;
 
+import com.hoixuan.be_course_saling_web.model.Lesson;
 import com.hoixuan.be_course_saling_web.model.MyCourse;
+import com.hoixuan.be_course_saling_web.model.dto.LessonLearned;
 import com.hoixuan.be_course_saling_web.service.AppUserService;
 import com.hoixuan.be_course_saling_web.service.MyCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,4 +34,10 @@ public class MyCourseAPI {
         return new ResponseEntity<>(myCourseService.findMyCourseLearn(idCourse),HttpStatus.OK);
     }
 
+    @PostMapping("/learned")
+    public ResponseEntity<MyCourse> lessonLearned (@RequestBody LessonLearned lessonLearned){
+        myCourseService.learned(lessonLearned.getIdMyCourse(),lessonLearned.getIdLesson());
+        MyCourse myCourse = myCourseService.findMyCourseLearn(lessonLearned.getIdMyCourse());
+        return new ResponseEntity<>(myCourse,HttpStatus.OK);
+    }
 }
