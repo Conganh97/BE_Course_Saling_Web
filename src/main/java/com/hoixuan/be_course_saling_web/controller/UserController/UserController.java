@@ -58,6 +58,17 @@ public class UserController {
         userService.save(appUser);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<AppUser>updateCmt(@PathVariable Long id,@RequestBody AppUser appUser) {
+        Optional<AppUser> appUser1 = userService.findById(id);
+        if (!appUser1.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+//        appUser1.(appUser.get().getIdUser());
+        userService.save(appUser);
+        return new ResponseEntity<>(appUser,HttpStatus.CREATED);
+    }
+
 
     @DeleteMapping("/{idUser}")
     public ResponseEntity<AppUser> deleteUser(@PathVariable Long idUser) {

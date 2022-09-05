@@ -23,26 +23,34 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idUser;
     private String fullName;
-    @NotBlank
-    @Size(max = 20,min = 6)
-    @Column(unique = true)
+//    @NotBlank
+//    @Size(max = 20,min = 6)
+//    @Column(unique = true)
     private String userName;
-    @Size(max = 16,min = 6)
-    @NotBlank
-    @JsonIgnore
+//    @Size(max = 16,min = 6)
+//    @NotBlank
+//    @JsonIgnore
     private String password;
-    @Email
+//    @Email
     private String email;
-    @NotBlank
+//    @NotBlank
     private String address;
     private Date dateOfBirth;
-    @NotBlank
+//    @NotBlank
     private String phone;
-    @NotBlank
+//    @NotBlank
     private String avatarSrc;
-    @Column(length = 1000000)
+//    @Column(length = 1000000)
     private String description;
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private Set<Role> roles;
     private boolean status = true;
+
+    public long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(long idUser) {
+        this.idUser = idUser;
+    }
 }
