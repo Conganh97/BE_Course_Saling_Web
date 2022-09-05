@@ -1,16 +1,21 @@
 package com.hoixuan.be_course_saling_web.controller;
 
-import com.hoixuan.be_course_saling_web.model.Lesson;
-import com.hoixuan.be_course_saling_web.model.MyCourse;
+import com.hoixuan.be_course_saling_web.model.*;
 import com.hoixuan.be_course_saling_web.model.dto.LessonLearned;
 import com.hoixuan.be_course_saling_web.service.AppUserService;
+import com.hoixuan.be_course_saling_web.service.CourseService;
 import com.hoixuan.be_course_saling_web.service.MyCourseService;
+import com.hoixuan.be_course_saling_web.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin("*")
@@ -21,6 +26,11 @@ public class MyCourseAPI {
 
     @Autowired
     MyCourseService myCourseService;
+
+    @Autowired
+    CourseService courseService;
+    @Autowired
+    WalletService walletService;
 
 
     @GetMapping("/myCourse")
@@ -39,5 +49,28 @@ public class MyCourseAPI {
         myCourseService.learned(lessonLearned.getIdMyCourse(),lessonLearned.getIdLesson());
         MyCourse myCourse = myCourseService.findMyCourseLearn(lessonLearned.getIdMyCourse());
         return new ResponseEntity<>(myCourse,HttpStatus.OK);
+    }
+
+    @GetMapping("/buyCourse/{idCourse}")
+    public ResponseEntity<MyCourse> buyCourse(@PathVariable long idCourse){
+        //        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Wallet wallet = walletService.findByIdUser(appUserService.findByUserName("conganh").getIdUser());
+        Course course = courseService.findById(idCourse);
+        if(wallet.getMoney() >= course.getPriceCourse()){
+            wallet.setMoney(wallet.getMoney()-course.getPriceCourse());
+            walletService.save(wallet);
+            MyCourse myCourse = new MyCourse();
+            AppUser appUser = appUserService.findByUserName("conganh");
+            myCourse.setCourse(course);
+            myCourse.setAppUser(appUser);
+            myCourse.setStatusMyCourse(true);
+            Set<Lesson> lessonlist = new HashSet<>();
+            myCourse.setLessonList(lessonlist);
+            myCourse.setCompletionProgress(0);
+            long millis=System.currentTimeMillis();
+            java.sql.Date date=new java.sql.Date(millis);
+            myCourse.setExpire(date);
+            return new ResponseEntity<>(myCourseService.save(myCourse),HttpStatus.OK);
+        } else return new ResponseEntity(new MyCourse(), HttpStatus.BAD_REQUEST);
     }
 }
