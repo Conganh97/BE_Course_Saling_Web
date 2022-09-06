@@ -1,4 +1,4 @@
-package com.hoixuan.be_course_saling_web.controller;
+package com.hoixuan.be_course_saling_web.controller.usercontroller;
 
 
 import com.hoixuan.be_course_saling_web.model.Role;

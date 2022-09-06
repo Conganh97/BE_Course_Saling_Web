@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CourseService {
     @Autowired
@@ -19,5 +21,9 @@ public class CourseService {
     }
     public Course save(Course course){
         return iCourseRepo.save(course);
+    }
+
+    public List<Course> getTrendingCourse (){
+        return iCourseRepo.getTrendingCourse();
     }
 }

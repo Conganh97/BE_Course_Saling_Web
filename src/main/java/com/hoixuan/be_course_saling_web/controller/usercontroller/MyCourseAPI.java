@@ -1,4 +1,4 @@
-package com.hoixuan.be_course_saling_web.controller;
+package com.hoixuan.be_course_saling_web.controller.usercontroller;
 
 import com.hoixuan.be_course_saling_web.model.*;
 import com.hoixuan.be_course_saling_web.model.dto.LessonLearned;
@@ -7,6 +7,9 @@ import com.hoixuan.be_course_saling_web.service.CourseService;
 import com.hoixuan.be_course_saling_web.service.MyCourseService;
 import com.hoixuan.be_course_saling_web.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -80,6 +83,16 @@ public class MyCourseAPI {
     @GetMapping("/find/{id}")
     public ResponseEntity<Course> findById(@PathVariable(required = true) int id) {
         return new ResponseEntity<>(courseService.findById(id),HttpStatus.OK);
+    }
+    @GetMapping("/{page}")
+    public ResponseEntity<Page<Course>> getAll(@PathVariable(required = true) int page) {
+        Page<Course> coursePage = courseService.getAll(PageRequest.of(page, 5, Sort.by("nameCourse")));
+        return  new ResponseEntity<>(coursePage, HttpStatus.OK);
+    }
+    @GetMapping("/trendingCourse")
+    public ResponseEntity <List<Course>> getTrendingCourse (){
+        List<Course> courseList = courseService.getTrendingCourse();
+        return new ResponseEntity<>(courseService.getTrendingCourse(),HttpStatus.OK);
     }
 
 }
