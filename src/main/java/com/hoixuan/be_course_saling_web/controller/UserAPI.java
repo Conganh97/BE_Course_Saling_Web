@@ -31,15 +31,15 @@ public class UserAPI {
 
     @GetMapping("")
     public ResponseEntity<AppUser> getProfile (){
-//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
-        return new ResponseEntity<AppUser>(appUserService.findByUserName("conganh"),HttpStatus.OK);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
+        return new ResponseEntity<AppUser>(appUser,HttpStatus.OK);
     }
 
     @PostMapping("/change-profile")
     public ResponseEntity<AppUser> changeProfile(@RequestBody ChangeProfileUser changeProfileUser){
-//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AppUser appUser =appUserService.findByUserName("conganh");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
 
         appUser.setFullName(changeProfileUser.getFullName());
         appUser.setAddress(changeProfileUser.getAddress());
@@ -54,8 +54,8 @@ public class UserAPI {
 
     @PostMapping("/change-avatar")
     public ResponseEntity<AppUser> changeAvatar(@RequestBody ChangeAvatar changeAvatar){
-//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AppUser appUser =appUserService.findByUserName("conganh");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
 
         appUser.setAvatarSrc(changeAvatar.getAvatar());
         appUserService.save(appUser);

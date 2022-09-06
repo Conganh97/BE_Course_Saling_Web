@@ -16,7 +16,7 @@ public class MyCourse {
     private AppUser appUser;
     @ManyToOne
     private Course course;
-    private int completionProgress;
+    private double completionProgress;
     private Date expire;
     private boolean statusMyCourse = true;
     @OneToMany

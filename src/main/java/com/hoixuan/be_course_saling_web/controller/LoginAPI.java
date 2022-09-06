@@ -35,8 +35,6 @@ public class LoginAPI {
     @Autowired
     AppUserService appUserService;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
 
 
 
