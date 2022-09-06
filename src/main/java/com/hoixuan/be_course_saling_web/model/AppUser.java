@@ -13,11 +13,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-                "userName"
-        })
-})
+
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

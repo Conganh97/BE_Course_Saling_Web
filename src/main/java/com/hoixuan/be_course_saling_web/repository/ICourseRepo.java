@@ -8,4 +8,10 @@ import java.util.List;
 
 public interface ICourseRepo extends PagingAndSortingRepository<Course,Long> {
 
+<<<<<<< HEAD
+=======
+    Course findByIdCourse(long id);
+
+
+>>>>>>> 908e9a7f057ad2898ba0b39421b80fad420007ab
 }
