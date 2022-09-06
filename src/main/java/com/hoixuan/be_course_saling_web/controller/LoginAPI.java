@@ -24,7 +24,6 @@ import java.util.Set;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("auth")
 public class LoginAPI {
     @Autowired
     JwtService jwtService;

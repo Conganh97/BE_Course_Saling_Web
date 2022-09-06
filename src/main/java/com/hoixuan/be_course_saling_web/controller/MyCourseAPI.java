@@ -9,6 +9,8 @@ import com.hoixuan.be_course_saling_web.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -20,7 +22,7 @@ import java.util.Set;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("course")
+    @RequestMapping("course")
 public class MyCourseAPI {
     @Autowired
     AppUserService appUserService;
@@ -54,14 +56,14 @@ public class MyCourseAPI {
 
     @GetMapping("/buyCourse/{idCourse}")
     public ResponseEntity<MyCourse> buyCourse(@PathVariable long idCourse){
-        //        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Wallet wallet = walletService.findByIdUser(appUserService.findByUserName("conganh").getIdUser());
+                UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Wallet wallet = walletService.findByIdUser(appUserService.findByUserName(userDetails.getUsername()).getIdUser());
         Course course = courseService.findById(idCourse);
         if(wallet.getMoney() >= course.getPriceCourse()){
             wallet.setMoney(wallet.getMoney()-course.getPriceCourse());
             walletService.save(wallet);
             MyCourse myCourse = new MyCourse();
-            AppUser appUser = appUserService.findByUserName("conganh");
+            AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
             myCourse.setCourse(course);
             myCourse.setAppUser(appUser);
             myCourse.setStatusMyCourse(true);
@@ -75,4 +77,9 @@ public class MyCourseAPI {
             return new ResponseEntity<>(myCourseService.save(myCourse),HttpStatus.OK);
         } else return new ResponseEntity(new MyCourse(), HttpStatus.BAD_REQUEST);
     }
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Course> findById(@PathVariable(required = true) int id) {
+        return new ResponseEntity<>(courseService.findById(id),HttpStatus.OK);
+    }
+
 }
