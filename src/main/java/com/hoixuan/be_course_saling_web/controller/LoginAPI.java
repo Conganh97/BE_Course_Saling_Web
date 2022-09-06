@@ -24,7 +24,6 @@ import java.util.Set;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("auth")
 public class LoginAPI {
     @Autowired
     JwtService jwtService;
@@ -72,5 +71,4 @@ public class LoginAPI {
         appUserService.save(user);
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
-
 }
