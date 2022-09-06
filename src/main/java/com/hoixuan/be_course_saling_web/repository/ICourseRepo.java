@@ -11,7 +11,7 @@ public interface ICourseRepo extends PagingAndSortingRepository<Course,Long> {
 
     Course findByIdCourse(long id);
 
-    @Query(nativeQuery = true,value = "select * from course limit 3")
+    @Query(nativeQuery = true,value = "SELECT * FROM course where status_course = 1 limit 3")
     List<Course> getTrendingCourse ();
 
 }

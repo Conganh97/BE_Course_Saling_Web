@@ -78,7 +78,7 @@ public class MyCourseAPI {
             Date date=new Date(cal.getTimeInMillis());
             myCourse.setExpire(date);
             return new ResponseEntity<>(myCourseService.save(myCourse),HttpStatus.OK);
-        } else return new ResponseEntity(new MyCourse(), HttpStatus.BAD_REQUEST);
+        } else return new ResponseEntity(HttpStatus.OK);
     }
     @GetMapping("/find/{id}")
     public ResponseEntity<Course> findById(@PathVariable(required = true) int id) {
