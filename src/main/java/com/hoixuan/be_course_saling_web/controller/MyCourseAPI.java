@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -67,8 +68,9 @@ public class MyCourseAPI {
             Set<Lesson> lessonlist = new HashSet<>();
             myCourse.setLessonList(lessonlist);
             myCourse.setCompletionProgress(0);
-            long millis=System.currentTimeMillis();
-            java.sql.Date date=new java.sql.Date(millis);
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.MONTH,course.getTimeCourse());
+            Date date=new Date(cal.getTimeInMillis());
             myCourse.setExpire(date);
             return new ResponseEntity<>(myCourseService.save(myCourse),HttpStatus.OK);
         } else return new ResponseEntity(new MyCourse(), HttpStatus.BAD_REQUEST);

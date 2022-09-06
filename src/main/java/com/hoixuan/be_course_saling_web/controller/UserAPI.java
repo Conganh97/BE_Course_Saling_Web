@@ -33,13 +33,14 @@ public class UserAPI {
     public ResponseEntity<AppUser> getProfile (){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
-        return new ResponseEntity<AppUser>(appUserService.findByUserName(appUser.getUserName()),HttpStatus.OK);
+        return new ResponseEntity<AppUser>(appUser,HttpStatus.OK);
     }
 
     @PostMapping("/change-profile")
     public ResponseEntity<AppUser> changeProfile(@RequestBody ChangeProfileUser changeProfileUser){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
+
         appUser.setFullName(changeProfileUser.getFullName());
         appUser.setAddress(changeProfileUser.getAddress());
         appUser.setDateOfBirth(changeProfileUser.getDateOfBirth());
