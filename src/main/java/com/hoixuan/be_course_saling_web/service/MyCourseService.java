@@ -1,5 +1,6 @@
 package com.hoixuan.be_course_saling_web.service;
 
+import com.hoixuan.be_course_saling_web.model.Lesson;
 import com.hoixuan.be_course_saling_web.model.MyCourse;
 import com.hoixuan.be_course_saling_web.repository.IMyCourseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,6 +20,8 @@ public class MyCourseService {
 
     @Autowired
     AppUserService appUserService;
+    @Autowired
+    LessonService lessonService;
 
 
     public List<MyCourse> findAllMyCourseByIdUser (long idUser){
@@ -24,9 +29,32 @@ public class MyCourseService {
     }
 
     public long findIdUser () {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return appUserService.findByUserName(userDetails.getUsername()).getIdUser();
+//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return appUserService.findByUserName("conganh").getIdUser();
     }
 
+    public MyCourse findMyCourseLearn (long idCourse){
+        return iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(appUserService.findByUserName("conganh").getIdUser(),idCourse);
+    }
 
+    public MyCourse learned (long idMyCourse,long idLesson){
+        Lesson lesson = lessonService.findById(idLesson);
+        MyCourse myCourse = iMyCourseRepo.findMyCourseByIdMyCourse(idMyCourse);
+        myCourse.getLessonList().add(lesson);
+        iMyCourseRepo.save(myCourse);
+        ArrayList<Lesson> lessonList = (ArrayList<Lesson>) lessonService.getAllByIdCourse(myCourse.getCourse().getIdCourse());
+        if(myCourse.getLessonList().size() == 0){
+            myCourse.setCompletionProgress(0);
+        } else {
+
+            double completionProgress = ((double) myCourse.getLessonList().size()) / ((double) lessonList.size()) * 100;
+            DecimalFormat f = new DecimalFormat("##.00");
+
+            myCourse.setCompletionProgress(Double.parseDouble(f.format(completionProgress)));
+        }
+        return iMyCourseRepo.save(myCourse);
+    }
+    public MyCourse save (MyCourse myCourse){
+        return iMyCourseRepo.save(myCourse);
+    }
 }

@@ -31,27 +31,27 @@ public class UserAPI {
 
     @GetMapping("")
     public ResponseEntity<AppUser> getProfile (){
-//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
-        return new ResponseEntity<AppUser>(appUserService.findByUserName("conganh"),HttpStatus.OK);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
+        return new ResponseEntity<AppUser>(appUserService.findByUserName(appUser.getUserName()),HttpStatus.OK);
     }
 
-    @PutMapping("/change-profile")
+    @PostMapping("/change-profile")
     public ResponseEntity<AppUser> changeProfile(@RequestBody ChangeProfileUser changeProfileUser){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
-
         appUser.setFullName(changeProfileUser.getFullName());
         appUser.setAddress(changeProfileUser.getAddress());
         appUser.setDateOfBirth(changeProfileUser.getDateOfBirth());
         appUser.setPhone(changeProfileUser.getPhone());
         appUser.setDescription(changeProfileUser.getDescription());
         appUser.setUserName(changeProfileUser.getUserName());
+        appUser.setEmail(changeProfileUser.getEmail());
         appUserService.save(appUser);
         return new ResponseEntity<>(appUser, HttpStatus.OK);
     }
 
-    @PutMapping("/change-avatar")
+    @PostMapping("/change-avatar")
     public ResponseEntity<AppUser> changeAvatar(@RequestBody ChangeAvatar changeAvatar){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
