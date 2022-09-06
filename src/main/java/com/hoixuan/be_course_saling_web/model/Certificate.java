@@ -11,9 +11,6 @@ public class Certificate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idCertificate;
-    @NotBlank
-    private String nameCertificate;
-    @NotBlank
     private String imageCertificate;
     @ManyToOne
     private AppUser appUser;

@@ -19,22 +19,21 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idUser;
     private String fullName;
-    @NotBlank
+
     @Size(max = 20,min = 6)
     @Column(unique = true)
     private String userName;
     @Size(max = 16,min = 6)
-    @NotBlank
+
     @JsonIgnore
     private String password;
     @Email
     private String email;
-    @NotBlank
+
     private String address;
-    private Date dateOfBirth;
-    @NotBlank
+
     private String phone;
-    @NotBlank
+
     private String avatarSrc;
     @Column(length = 1000000)
     private String description;
