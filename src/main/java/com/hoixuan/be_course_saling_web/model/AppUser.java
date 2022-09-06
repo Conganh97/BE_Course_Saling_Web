@@ -31,9 +31,8 @@ public class AppUser {
     private String email;
 
     private String address;
-
+    private Date dateOfBirth;
     private String phone;
-
     private String avatarSrc;
     @Column(length = 1000000)
     private String description;
