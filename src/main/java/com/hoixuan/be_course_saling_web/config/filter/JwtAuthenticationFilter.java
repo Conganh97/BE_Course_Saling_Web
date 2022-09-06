@@ -4,7 +4,10 @@ package com.hoixuan.be_course_saling_web.config.filter;
 import com.hoixuan.be_course_saling_web.service.AppUserService;
 import com.hoixuan.be_course_saling_web.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -31,9 +34,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = getTokenFromRequest(request);
             if (token != null) {
                 // lấy username trong token
-                String username = jwtService.getUserNameFromJwtToken(token);
+                String userName = jwtService.getUserNameFromJwtToken(token);
                 // lấy ra UserDetails thông qua username
-                UserDetails userDetails = userService.loadUserByUsername(username);
+                UserDetails userDetails = userService.loadUserByUsername(userName);
 
                 // thực hiện việc xắc thực thông qua token.
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

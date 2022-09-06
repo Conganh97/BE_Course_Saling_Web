@@ -3,10 +3,8 @@ package com.hoixuan.be_course_saling_web.model;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 @Entity
 @Data
 public class Role implements GrantedAuthority {
@@ -18,4 +16,6 @@ public class Role implements GrantedAuthority {
     public String getAuthority() {
         return nameRole;
     }
+
+
 }

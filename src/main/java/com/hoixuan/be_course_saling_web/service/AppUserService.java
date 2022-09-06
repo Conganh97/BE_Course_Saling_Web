@@ -1,5 +1,6 @@
 package com.hoixuan.be_course_saling_web.service;
 
+import com.hoixuan.be_course_saling_web.dto.AccLogin;
 import com.hoixuan.be_course_saling_web.model.AppUser;
 import com.hoixuan.be_course_saling_web.repository.IAppUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -17,20 +19,29 @@ public class AppUserService implements UserDetailsService {
     IAppUserRepo iAppUserRepo;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser appUser = iAppUserRepo.findByUserName(username);
-        return new User(appUser.getUserName(), appUser.getPassword(), appUser.getRoles());
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        AppUser appUser = iAppUserRepo.findByUserName(userName);
+        return new User(appUser.getUserName(),appUser.getPassword(),appUser.getRoles());
     }
     public List<AppUser> getAll(){
         return (List<AppUser>) iAppUserRepo.findAll();
     }
 
-    public AppUser findByUserName(String username){
-        AppUser appUser = iAppUserRepo.findByUserName(username);
+    public AppUser findByUserName(String userName){
+        AppUser appUser = iAppUserRepo.findByUserName(userName);
         return appUser;
     }
-
     public AppUser save(AppUser appUser){
         return iAppUserRepo.save(appUser);
     }
+
+     public Boolean existsByUserName(String userName) {
+        return iAppUserRepo.existsByUserName(userName);
+    }
+
+    public boolean existsByEmail(String email) {
+        return iAppUserRepo.existsByEmail(email);
+    }
+
+
 }
