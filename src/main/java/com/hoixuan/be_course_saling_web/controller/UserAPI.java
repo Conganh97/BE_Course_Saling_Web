@@ -63,8 +63,8 @@ public class UserAPI {
     }
     @PostMapping("/change-password")
     public ResponseEntity<AppUser> changePassword(@RequestBody ChangePassword changePassword) {
-//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AppUser appUser = appUserService.findByUserName("conganh");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
         String newPassword;
         String oldPassword = changePassword.getOldPassword();
         if (oldPassword.equals(appUser.getPassword())) {
