@@ -17,7 +17,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -50,11 +52,8 @@ public class LoginAPI {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AppUser> register(@RequestBody SignUpForm signUpForm) {
-        if (!signUpForm.getPassword().equals(signUpForm.getConfirmPassword()) || appUserService.findByUserName(signUpForm.getUserName()) != null
-                || appUserService.findByEMail(signUpForm.getEmail()) != null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<List<Boolean>> register(@RequestBody SignUpForm signUpForm) {
+
         AppUser user = new AppUser();
         user.setUserName(signUpForm.getUserName());
         user.setPassword(signUpForm.getPassword());
@@ -65,7 +64,21 @@ public class LoginAPI {
         roleSet.add(role);
         user.setRoles(roleSet);
         appUserService.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(checkDuplicate(signUpForm), HttpStatus.OK);
+    }
+    public List<Boolean> checkDuplicate (SignUpForm signUpForm ){
+        List<Boolean> result=new ArrayList<>();
+        AppUser appUserByEmail=appUserService.findByEMail(signUpForm.getEmail());
+        AppUser appUserByName=appUserService.findByUserName(signUpForm.getUserName());
+
+        boolean checkMail=appUserByEmail==null;
+        boolean checkName=appUserByName==null;
+        if (checkMail&&checkName){
+            register(signUpForm);
+        }
+        result.add(checkName);
+        result.add(checkMail);
+        return result;
     }
 
 
