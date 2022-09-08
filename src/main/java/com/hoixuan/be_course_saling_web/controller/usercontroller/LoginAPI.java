@@ -15,10 +15,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -35,10 +36,8 @@ public class LoginAPI {
     AppUserService appUserService;
 
 
-
-
     @PostMapping("/login")
-    public UserToken login(@RequestBody AccLogin accLogin){
+    public UserToken login(@RequestBody AccLogin accLogin) {
         try {
             // Tạo ra 1 đối tượng Authentication.
             Authentication authentication = authenticationManager.authenticate(
@@ -46,29 +45,41 @@ public class LoginAPI {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtService.createToken(authentication);
             AppUser appUser1 = appUserService.findByUserName(accLogin.getUserName());
-            return new UserToken(appUser1.getIdUser(),appUser1.getUserName(),token,appUser1.getRoles());
+            return new UserToken(appUser1.getIdUser(), appUser1.getUserName(), token, appUser1.getRoles());
         } catch (Exception e) {
             return null;
         }
-
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AppUser> register(@RequestBody SignUpForm signUpForm){
-        if (!signUpForm.getPassword().equals(signUpForm.getConfirmPassword()) || appUserService.findByUserName(signUpForm.getUserName()) != null
-                || appUserService.findByEMail(signUpForm.getEmail()) != null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<List<Boolean>> register(@RequestBody SignUpForm signUpForm) {
+        List<Boolean> result=new ArrayList<>();
+        AppUser appUserByEmail=appUserService.findByEMail(signUpForm.getEmail());
+        AppUser appUserByName=appUserService.findByUserName(signUpForm.getUserName());
+
+        boolean checkUserName = appUserByName == null;
+        boolean checkMail = appUserByEmail == null;
+        if (checkUserName && checkMail) {
+            AppUser user = new AppUser();
+            user.setUserName(signUpForm.getUserName());
+            user.setEmail(signUpForm.getEmail());
+            user.setPassword(signUpForm.getPassword());
+            Set<Role> roleSet = new HashSet<>();
+            Role role = new Role();
+            role.setId(1);
+            roleSet.add(role);
+            user.setRoles(roleSet);
+            appUserService.save(user);
+            result.add(true);
+            result.add(true);
+        }else {
+            result.add(checkUserName);
+            result.add(checkMail);
         }
-        AppUser user = new AppUser();
-        user.setUserName(signUpForm.getUserName());
-        user.setPassword(signUpForm.getPassword());
-        user.setEmail(signUpForm.getEmail());
-        Set<Role> roleSet = new HashSet<>();
-        Role role = new Role();
-        role.setId(1);
-        roleSet.add(role);
-        user.setRoles(roleSet);
-        appUserService.save(user);
-        return new ResponseEntity<>(user,HttpStatus.OK);
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
+
+
+
+
 }
