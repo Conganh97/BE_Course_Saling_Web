@@ -29,12 +29,14 @@ public class MyCourseService {
     }
 
     public long findIdUser () {
-//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return appUserService.findByUserName("conganh").getIdUser();
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return appUserService.findByUserName(userDetails.getUsername()).getIdUser();
     }
 
     public MyCourse findMyCourseLearn (long idCourse){
-        return iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(appUserService.findByUserName("conganh").getIdUser(),idCourse);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(appUserService.findByUserName(userDetails.getUsername()).getIdUser(),idCourse);
     }
 
     public MyCourse learned (long idMyCourse,long idLesson){

@@ -1,4 +1,4 @@
-package com.hoixuan.be_course_saling_web.controller;
+package com.hoixuan.be_course_saling_web.controller.usercontroller;
 
 
 import com.hoixuan.be_course_saling_web.model.Role;
@@ -53,33 +53,33 @@ public class LoginAPI {
 
     @PostMapping("/register")
     public ResponseEntity<List<Boolean>> register(@RequestBody SignUpForm signUpForm) {
-
-        AppUser user = new AppUser();
-        user.setUserName(signUpForm.getUserName());
-        user.setPassword(signUpForm.getPassword());
-        user.setEmail(signUpForm.getEmail());
-        Set<Role> roleSet = new HashSet<>();
-        Role role = new Role();
-        role.setId(1);
-        roleSet.add(role);
-        user.setRoles(roleSet);
-        appUserService.save(user);
-        return new ResponseEntity<>(checkDuplicate(signUpForm), HttpStatus.OK);
-    }
-    public List<Boolean> checkDuplicate (SignUpForm signUpForm ){
         List<Boolean> result=new ArrayList<>();
         AppUser appUserByEmail=appUserService.findByEMail(signUpForm.getEmail());
         AppUser appUserByName=appUserService.findByUserName(signUpForm.getUserName());
 
-        boolean checkMail=appUserByEmail==null;
-        boolean checkName=appUserByName==null;
-        if (checkMail&&checkName){
-            register(signUpForm);
+        boolean checkUserName = appUserByName == null;
+        boolean checkMail = appUserByEmail == null;
+        if (checkUserName && checkMail) {
+            AppUser user = new AppUser();
+            user.setUserName(signUpForm.getUserName());
+            user.setEmail(signUpForm.getEmail());
+            user.setPassword(signUpForm.getPassword());
+            Set<Role> roleSet = new HashSet<>();
+            Role role = new Role();
+            role.setId(1);
+            roleSet.add(role);
+            user.setRoles(roleSet);
+            appUserService.save(user);
+            result.add(true);
+            result.add(true);
+        }else {
+            result.add(checkUserName);
+            result.add(checkMail);
         }
-        result.add(checkName);
-        result.add(checkMail);
-        return result;
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
+
+
 
 
 }

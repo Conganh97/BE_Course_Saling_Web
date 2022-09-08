@@ -1,4 +1,4 @@
-package com.hoixuan.be_course_saling_web.controller;
+package com.hoixuan.be_course_saling_web.controller.usercontroller;
 
 import com.hoixuan.be_course_saling_web.model.*;
 import com.hoixuan.be_course_saling_web.model.dto.LessonLearned;
@@ -7,8 +7,13 @@ import com.hoixuan.be_course_saling_web.service.CourseService;
 import com.hoixuan.be_course_saling_web.service.MyCourseService;
 import com.hoixuan.be_course_saling_web.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -20,7 +25,7 @@ import java.util.Set;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("course")
+    @RequestMapping("course")
 public class MyCourseAPI {
     @Autowired
     AppUserService appUserService;
@@ -54,14 +59,14 @@ public class MyCourseAPI {
 
     @GetMapping("/buyCourse/{idCourse}")
     public ResponseEntity<MyCourse> buyCourse(@PathVariable long idCourse){
-        //        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Wallet wallet = walletService.findByIdUser(appUserService.findByUserName("conganh").getIdUser());
+                UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Wallet wallet = walletService.findByIdUser(appUserService.findByUserName(userDetails.getUsername()).getIdUser());
         Course course = courseService.findById(idCourse);
         if(wallet.getMoney() >= course.getPriceCourse()){
             wallet.setMoney(wallet.getMoney()-course.getPriceCourse());
             walletService.save(wallet);
             MyCourse myCourse = new MyCourse();
-            AppUser appUser = appUserService.findByUserName("conganh");
+            AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
             myCourse.setCourse(course);
             myCourse.setAppUser(appUser);
             myCourse.setStatusMyCourse(true);
@@ -73,6 +78,21 @@ public class MyCourseAPI {
             Date date=new Date(cal.getTimeInMillis());
             myCourse.setExpire(date);
             return new ResponseEntity<>(myCourseService.save(myCourse),HttpStatus.OK);
-        } else return new ResponseEntity(new MyCourse(), HttpStatus.BAD_REQUEST);
+        } else return new ResponseEntity(HttpStatus.OK);
     }
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Course> findById(@PathVariable(required = true) int id) {
+        return new ResponseEntity<>(courseService.findById(id),HttpStatus.OK);
+    }
+    @GetMapping("/{page}")
+    public ResponseEntity<Page<Course>> getAll(@PathVariable(required = true) int page) {
+        Page<Course> coursePage = courseService.getAll(PageRequest.of(page, 5, Sort.by("nameCourse")));
+        return  new ResponseEntity<>(coursePage, HttpStatus.OK);
+    }
+    @GetMapping("/trendingCourse")
+    public ResponseEntity <List<Course>> getTrendingCourse (){
+        List<Course> courseList = courseService.getTrendingCourse();
+        return new ResponseEntity<>(courseService.getTrendingCourse(),HttpStatus.OK);
+    }
+
 }
