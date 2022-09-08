@@ -29,4 +29,7 @@ public class CourseService {
     public List<Course> getAllCourseByCriteria (String nameCourse,Integer down,Integer up,Integer experience,String nameInstructor,Integer rating){
         return iCourseRepo.getAllCourseByCriteria(nameCourse,down,up,experience,nameInstructor,rating);
     }
+    public List<Course> getAllNoPage(){
+        return (List<Course>) iCourseRepo.findAll();
+    }
 }
