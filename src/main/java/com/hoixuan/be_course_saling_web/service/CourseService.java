@@ -26,4 +26,7 @@ public class CourseService {
     public List<Course> getTrendingCourse (){
         return iCourseRepo.getTrendingCourse();
     }
+    public List<Course> getAllCourseByCriteria (String nameCourse,Integer down,Integer up,Integer experience,String nameInstructor,Integer rating){
+        return iCourseRepo.getAllCourseByCriteria(nameCourse,down,up,experience,nameInstructor,rating);
+    }
 }
