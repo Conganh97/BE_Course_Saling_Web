@@ -2,10 +2,7 @@ package com.hoixuan.be_course_saling_web.controller.usercontroller;
 
 import com.hoixuan.be_course_saling_web.model.*;
 import com.hoixuan.be_course_saling_web.model.dto.LessonLearned;
-import com.hoixuan.be_course_saling_web.service.AppUserService;
-import com.hoixuan.be_course_saling_web.service.CourseService;
-import com.hoixuan.be_course_saling_web.service.MyCourseService;
-import com.hoixuan.be_course_saling_web.service.WalletService;
+import com.hoixuan.be_course_saling_web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +35,9 @@ public class MyCourseAPI {
     @Autowired
     WalletService walletService;
 
+    @Autowired
+    BillService billService;
+
 
     @GetMapping("/myCourse")
     public ResponseEntity<List<MyCourse>> getAllMyCourseByUser() {
@@ -63,22 +63,40 @@ public class MyCourseAPI {
                 UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Wallet wallet = walletService.findByIdUser(appUserService.findByUserName(userDetails.getUsername()).getIdUser());
         Course course = courseService.findById(idCourse);
+
         if(wallet.getMoney() >= course.getPriceCourse()){
-            wallet.setMoney(wallet.getMoney()-course.getPriceCourse());
-            walletService.save(wallet);
-            MyCourse myCourse = new MyCourse();
-            AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
-            myCourse.setCourse(course);
-            myCourse.setAppUser(appUser);
-            myCourse.setStatusMyCourse(true);
-            Set<Lesson> lessonlist = new HashSet<>();
-            myCourse.setLessonList(lessonlist);
-            myCourse.setCompletionProgress(0);
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.MONTH,course.getTimeCourse());
-            Date date=new Date(cal.getTimeInMillis());
-            myCourse.setExpire(date);
-            return new ResponseEntity<>(myCourseService.save(myCourse),HttpStatus.OK);
+            if (myCourseService.checkBuy(idCourse)){
+                MyCourse myCourse = myCourseService.findMyCourseLearn(idCourse);
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.MONTH,course.getTimeCourse());
+                Date date=new Date(cal.getTimeInMillis());
+                myCourse.setExpire(date);
+                myCourse.setStatusMyCourse(true);
+                return new ResponseEntity<>(myCourseService.save(myCourse),HttpStatus.OK);
+            } else {
+                wallet.setMoney(wallet.getMoney()-course.getPriceCourse());
+                walletService.save(wallet);
+                MyCourse myCourse = new MyCourse();
+                AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
+                myCourse.setCourse(course);
+                myCourse.setAppUser(appUser);
+                myCourse.setStatusMyCourse(true);
+                Set<Lesson> lessonlist = new HashSet<>();
+                myCourse.setLessonList(lessonlist);
+                myCourse.setCompletionProgress(0);
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.MONTH,course.getTimeCourse());
+                Date date=new Date(cal.getTimeInMillis());
+                myCourse.setExpire(date);
+                Bill bill = new Bill();
+                bill.setCourse(course);
+                bill.setAppUser(appUser);
+                bill.setCreateAt(date);
+                bill.setTotalBill(course.getPriceCourse());
+                billService.save(bill);
+                return new ResponseEntity<>(myCourseService.save(myCourse),HttpStatus.OK);
+            }
+
         } else return new ResponseEntity(HttpStatus.OK);
     }
     @GetMapping("/find/{id}")

@@ -58,4 +58,15 @@ public class MyCourseService {
     public MyCourse save (MyCourse myCourse){
         return iMyCourseRepo.save(myCourse);
     }
+
+    public boolean checkBuy(long idCourse){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        long idUser = appUserService.findByUserName(userDetails.getUsername()).getIdUser();
+        MyCourse myCourse = iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(idUser,idCourse);
+        if (myCourse != null){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
