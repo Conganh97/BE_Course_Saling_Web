@@ -52,6 +52,7 @@ public class MyCourseAPI {
 
     @PostMapping("/learned")
     public ResponseEntity<MyCourse> lessonLearned (@RequestBody LessonLearned lessonLearned){
+        LessonLearned a =lessonLearned;
         myCourseService.learned(lessonLearned.getIdMyCourse(),lessonLearned.getIdLesson());
         MyCourse myCourse = myCourseService.findMyCourseLearn(lessonLearned.getIdMyCourse());
         return new ResponseEntity<>(myCourse,HttpStatus.OK);

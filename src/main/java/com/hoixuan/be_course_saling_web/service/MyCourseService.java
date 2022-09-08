@@ -48,7 +48,6 @@ public class MyCourseService {
         if(myCourse.getLessonList().size() == 0){
             myCourse.setCompletionProgress(0);
         } else {
-
             double completionProgress = ((double) myCourse.getLessonList().size()) / ((double) lessonList.size()) * 100;
             DecimalFormat f = new DecimalFormat("##.00");
 
