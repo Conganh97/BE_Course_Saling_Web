@@ -5,16 +5,16 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
 
-@Data
 @Entity
-public class ScoreQuiz {
+@Data
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idScore;
-    @ManyToOne
-    private Quiz quiz;
+    private long idComment;
+    private String contentCmt;
+    private Date timeRating;
     @ManyToOne
     private AppUser appUser;
-    private int score;
-    private Date date;
+    @ManyToOne
+    private Course course;
 }

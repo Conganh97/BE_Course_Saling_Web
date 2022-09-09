@@ -37,10 +37,10 @@ public class AppUser {
     private Set<Role> roles;
     private boolean status = true;
 
-    public AppUser() {
-
+    public AppUser(String userName, String email, String password, String confirmPassword) {
     }
 
-    public AppUser(String userName, String email, String password) {
+    public AppUser() {
+
     }
 }

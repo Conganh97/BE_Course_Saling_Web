@@ -7,14 +7,14 @@ import java.util.Date;
 
 @Data
 @Entity
-public class ScoreQuiz {
+public class Bill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idScore;
-    @ManyToOne
-    private Quiz quiz;
+    private long idBill;
+    private Date createAt;
+    @OneToOne
+    private Course course;
     @ManyToOne
     private AppUser appUser;
-    private int score;
-    private Date date;
+    private double totalBill;
 }

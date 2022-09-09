@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CourseService {
     @Autowired
@@ -19,5 +21,15 @@ public class CourseService {
     }
     public Course save(Course course){
         return iCourseRepo.save(course);
+    }
+
+    public List<Course> getTrendingCourse (){
+        return iCourseRepo.getTrendingCourse();
+    }
+    public List<Course> getAllCourseByCriteria (String nameCourse,Integer down,Integer up,Integer experience,String nameInstructor,Integer rating){
+        return iCourseRepo.getAllCourseByCriteria(nameCourse,down,up,experience,nameInstructor,rating);
+    }
+    public List<Course> getAllNoPage(){
+        return (List<Course>) iCourseRepo.findAll();
     }
 }

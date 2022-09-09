@@ -29,12 +29,14 @@ public class MyCourseService {
     }
 
     public long findIdUser () {
-//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return appUserService.findByUserName("conganh").getIdUser();
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return appUserService.findByUserName(userDetails.getUsername()).getIdUser();
     }
 
     public MyCourse findMyCourseLearn (long idCourse){
-        return iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(appUserService.findByUserName("conganh").getIdUser(),idCourse);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(appUserService.findByUserName(userDetails.getUsername()).getIdUser(),idCourse);
     }
 
     public MyCourse learned (long idMyCourse,long idLesson){
@@ -46,7 +48,6 @@ public class MyCourseService {
         if(myCourse.getLessonList().size() == 0){
             myCourse.setCompletionProgress(0);
         } else {
-
             double completionProgress = ((double) myCourse.getLessonList().size()) / ((double) lessonList.size()) * 100;
             DecimalFormat f = new DecimalFormat("##.00");
 
@@ -56,5 +57,16 @@ public class MyCourseService {
     }
     public MyCourse save (MyCourse myCourse){
         return iMyCourseRepo.save(myCourse);
+    }
+
+    public boolean checkBuy(long idCourse){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        long idUser = appUserService.findByUserName(userDetails.getUsername()).getIdUser();
+        MyCourse myCourse = iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(idUser,idCourse);
+        if (myCourse != null){
+            return true;
+        } else {
+            return false;
+        }
     }
 }

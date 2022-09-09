@@ -11,4 +11,7 @@ public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idQuiz;
+    private String nameQuiz;
+    private long numberOfQuiz;
+    private int timeQuiz;
 }
