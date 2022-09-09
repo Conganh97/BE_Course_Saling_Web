@@ -23,9 +23,9 @@ public interface ICourseRepo extends PagingAndSortingRepository<Course,Long> {
         + " (:nameInstructor is null or i.name_instructor like  :nameInstructor )" + "and"
         + " (:rating is null or num_rating >= :rating)")
     List<Course> getAllCourseByCriteria(@Param("nameCourse") String nameCourse,
-                                         @Param("from") Integer down,
-                                         @Param("to") Integer up,
-                                         @Param("experience") Integer experience,
+                                         @Param("from") int down,
+                                         @Param("to") int up,
+                                         @Param("experience") int experience,
                                          @Param("nameInstructor") String nameInstructor,
-                                         @Param("rating") Integer rating);
+                                         @Param("rating") int rating);
 }
