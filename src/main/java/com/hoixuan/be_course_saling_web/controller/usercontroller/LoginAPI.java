@@ -53,10 +53,9 @@ public class LoginAPI {
 
     @PostMapping("/register")
     public ResponseEntity<List<Boolean>> register(@RequestBody SignUpForm signUpForm) {
-        List<Boolean> result=new ArrayList<>();
-        AppUser appUserByEmail=appUserService.findByEMail(signUpForm.getEmail());
-        AppUser appUserByName=appUserService.findByUserName(signUpForm.getUserName());
-
+        List<Boolean> result = new ArrayList<>();
+        AppUser appUserByEmail = appUserService.findByEMail(signUpForm.getEmail());
+        AppUser appUserByName = appUserService.findByUserName(signUpForm.getUserName());
         boolean checkUserName = appUserByName == null;
         boolean checkMail = appUserByEmail == null;
         if (checkUserName && checkMail) {
@@ -72,14 +71,10 @@ public class LoginAPI {
             appUserService.save(user);
             result.add(true);
             result.add(true);
-        }else {
+        } else {
             result.add(checkUserName);
             result.add(checkMail);
         }
-        return new ResponseEntity<>(result,HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
-
-
-
 }

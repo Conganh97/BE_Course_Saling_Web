@@ -1,6 +1,7 @@
 package com.hoixuan.be_course_saling_web.service;
 
 import com.hoixuan.be_course_saling_web.model.Bill;
+import com.hoixuan.be_course_saling_web.model.TotalBillInMonth;
 import com.hoixuan.be_course_saling_web.repository.IBillRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,9 @@ public class BillService {
 
     public Bill findById(long idBill){
         return iBillRepo.findById(idBill).get();
+    }
+
+    public TotalBillInMonth totalBillInMonth(long month){
+        return iBillRepo.getTotalBillInMonth(month);
     }
 }

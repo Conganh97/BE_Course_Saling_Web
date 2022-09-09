@@ -1,6 +1,7 @@
 package com.hoixuan.be_course_saling_web.service;
 
 import com.hoixuan.be_course_saling_web.model.Course;
+import com.hoixuan.be_course_saling_web.model.TotalBillInMonth;
 import com.hoixuan.be_course_saling_web.repository.ICourseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
