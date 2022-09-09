@@ -1,7 +1,9 @@
 package com.hoixuan.be_course_saling_web.controller.admincontroller;
 
 import com.hoixuan.be_course_saling_web.model.Course;
+import com.hoixuan.be_course_saling_web.model.Quiz;
 import com.hoixuan.be_course_saling_web.service.CourseService;
+import com.hoixuan.be_course_saling_web.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,8 @@ import java.awt.print.Pageable;
 public class CourseAdminAPI {
     @Autowired
     CourseService courseService;
+    @Autowired
+    QuizService quizService;
 
     @GetMapping("/{page}")
     public ResponseEntity<Page<Course>> getAll(@PathVariable(required = true) int page) {
@@ -30,7 +34,12 @@ public class CourseAdminAPI {
     }
     @PostMapping("/saveCourse")
     public ResponseEntity<Course> save(@RequestBody Course course) {
-        System.out.println(course);
+        String nameQuiz= "Quiz :"+ course.getNameCourse();
+        Quiz quiz = new Quiz();
+        quiz.setNameQuiz(nameQuiz);
+        quiz.setNumberOfQuiz(0);
+        quiz.setTimeQuiz(10);
+        course.setQuiz(quizService.save(quiz));
         return new ResponseEntity<>(courseService.save(course),HttpStatus.OK);
     }
     @GetMapping("/disable/{id}")
