@@ -14,4 +14,8 @@ public class InstructorService {
     public List<Instructor> getAll(){
         return (List<Instructor>) iInstructorRepo.findAll();
     }
+
+    public Iterable<Instructor> findAll() {
+        return iInstructorRepo.findAll();
+    }
 }

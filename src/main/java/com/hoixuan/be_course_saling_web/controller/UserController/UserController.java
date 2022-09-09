@@ -24,15 +24,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-//    @GetMapping
-//    public ResponseEntity<Iterable<AppUser>> findAllUSER() {
-//        List<AppUser> appUsers = (List<AppUser>) userService.findAll();
-//        if (appUsers.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
-//        return new ResponseEntity<>(appUsers, HttpStatus.OK);
-//    }
-
     @GetMapping("")
     public ResponseEntity<Iterable<AppUser>> showAllUser() {
         Iterable<AppUser> users = userService.findAll();
