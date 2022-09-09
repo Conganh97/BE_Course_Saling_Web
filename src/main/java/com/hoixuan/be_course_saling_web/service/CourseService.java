@@ -26,4 +26,8 @@ public class CourseService {
     public List<Course> getTrendingCourse (){
         return iCourseRepo.getTrendingCourse();
     }
+
+    public Course findByIdCourse(long id){
+        return iCourseRepo.findByIdCourse(id);
+    }
 }

@@ -25,7 +25,7 @@ import java.util.Set;
 
 @RestController
 @CrossOrigin("*")
-    @RequestMapping("course")
+@RequestMapping("course")
 public class MyCourseAPI {
     @Autowired
     AppUserService appUserService;
@@ -46,25 +46,25 @@ public class MyCourseAPI {
     }
 
     @GetMapping("/myCourseLearn/{idCourse}")
-    public ResponseEntity<MyCourse> getMyCourseLearn(@PathVariable long idCourse){
-        return new ResponseEntity<>(myCourseService.findMyCourseLearn(idCourse),HttpStatus.OK);
+    public ResponseEntity<MyCourse> getMyCourseLearn(@PathVariable long idCourse) {
+        return new ResponseEntity<>(myCourseService.findMyCourseLearn(idCourse), HttpStatus.OK);
     }
 
     @PostMapping("/learned")
-    public ResponseEntity<MyCourse> lessonLearned (@RequestBody LessonLearned lessonLearned){
-        LessonLearned a =lessonLearned;
-        myCourseService.learned(lessonLearned.getIdMyCourse(),lessonLearned.getIdLesson());
+    public ResponseEntity<MyCourse> lessonLearned(@RequestBody LessonLearned lessonLearned) {
+        LessonLearned a = lessonLearned;
+        myCourseService.learned(lessonLearned.getIdMyCourse(), lessonLearned.getIdLesson());
         MyCourse myCourse = myCourseService.findMyCourseLearn(lessonLearned.getIdMyCourse());
-        return new ResponseEntity<>(myCourse,HttpStatus.OK);
+        return new ResponseEntity<>(myCourse, HttpStatus.OK);
     }
 
     @GetMapping("/buyCourse/{idCourse}")
-    public ResponseEntity<MyCourse> buyCourse(@PathVariable long idCourse){
-                UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity<MyCourse> buyCourse(@PathVariable long idCourse) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Wallet wallet = walletService.findByIdUser(appUserService.findByUserName(userDetails.getUsername()).getIdUser());
         Course course = courseService.findById(idCourse);
-        if(wallet.getMoney() >= course.getPriceCourse()){
-            wallet.setMoney(wallet.getMoney()-course.getPriceCourse());
+        if (wallet.getMoney() >= course.getPriceCourse()) {
+            wallet.setMoney(wallet.getMoney() - course.getPriceCourse());
             walletService.save(wallet);
             MyCourse myCourse = new MyCourse();
             AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
@@ -75,25 +75,28 @@ public class MyCourseAPI {
             myCourse.setLessonList(lessonlist);
             myCourse.setCompletionProgress(0);
             Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.MONTH,course.getTimeCourse());
-            Date date=new Date(cal.getTimeInMillis());
+            cal.add(Calendar.MONTH, course.getTimeCourse());
+            Date date = new Date(cal.getTimeInMillis());
             myCourse.setExpire(date);
-            return new ResponseEntity<>(myCourseService.save(myCourse),HttpStatus.OK);
+            return new ResponseEntity<>(myCourseService.save(myCourse), HttpStatus.OK);
         } else return new ResponseEntity(HttpStatus.OK);
     }
+
     @GetMapping("/find/{id}")
     public ResponseEntity<Course> findById(@PathVariable(required = true) int id) {
-        return new ResponseEntity<>(courseService.findById(id),HttpStatus.OK);
+        return new ResponseEntity<>(courseService.findById(id), HttpStatus.OK);
     }
+
     @GetMapping("/{page}")
     public ResponseEntity<Page<Course>> getAll(@PathVariable(required = true) int page) {
         Page<Course> coursePage = courseService.getAll(PageRequest.of(page, 5, Sort.by("nameCourse")));
-        return  new ResponseEntity<>(coursePage, HttpStatus.OK);
+        return new ResponseEntity<>(coursePage, HttpStatus.OK);
     }
+
     @GetMapping("/trendingCourse")
-    public ResponseEntity <List<Course>> getTrendingCourse (){
+    public ResponseEntity<List<Course>> getTrendingCourse() {
         List<Course> courseList = courseService.getTrendingCourse();
-        return new ResponseEntity<>(courseService.getTrendingCourse(),HttpStatus.OK);
+        return new ResponseEntity<>(courseService.getTrendingCourse(), HttpStatus.OK);
     }
 
 }

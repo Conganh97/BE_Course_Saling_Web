@@ -20,9 +20,10 @@ public class WalletAPI {
     WalletService walletService;
     @Autowired
     AppUserService appUserService;
+
     @PostMapping("/recharge")
-    public ResponseEntity<Wallet> recharge(@RequestBody Recharge recharge){
-                UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity<Wallet> recharge(@RequestBody Recharge recharge) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Wallet wallet = walletService.findByIdUser(appUserService.findByUserName(userDetails.getUsername()).getIdUser());
         wallet.setMoney(wallet.getMoney() + recharge.getMoney());
         return new ResponseEntity<>(walletService.save(wallet), HttpStatus.OK);

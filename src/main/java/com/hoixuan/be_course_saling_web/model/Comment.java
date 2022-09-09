@@ -11,8 +11,8 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idComment;
-    private String contentRating;
-    private Date timeRating;
+    private String contentCmt;
+    private Date timeCmt;
     @ManyToOne
     private AppUser appUser;
     @ManyToOne
