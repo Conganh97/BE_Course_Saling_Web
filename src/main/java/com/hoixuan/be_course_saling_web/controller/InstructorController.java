@@ -2,7 +2,6 @@ package com.hoixuan.be_course_saling_web.controller;
 
 import com.hoixuan.be_course_saling_web.model.Instructor;
 import com.hoixuan.be_course_saling_web.service.InstructorService;
-//import com.hoixuan.be_course_saling_web.service.UserService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
