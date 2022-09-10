@@ -26,4 +26,7 @@ public class RequestRechargeService {
     public void delete(long idReq){
         iRequestRechargeRepo.deleteById(idReq);
     }
+    public RequestRecharge save (RequestRecharge requestRecharge){
+        return iRequestRechargeRepo.save(requestRecharge);
+    }
 }

@@ -4,6 +4,7 @@ import com.hoixuan.be_course_saling_web.model.AppUser;
 import com.hoixuan.be_course_saling_web.model.Bill;
 import com.hoixuan.be_course_saling_web.model.RequestRecharge;
 import com.hoixuan.be_course_saling_web.model.Wallet;
+import com.hoixuan.be_course_saling_web.model.dto.Money;
 import com.hoixuan.be_course_saling_web.model.dto.Recharge;
 import com.hoixuan.be_course_saling_web.service.AppUserService;
 import com.hoixuan.be_course_saling_web.service.BillService;
@@ -48,5 +49,19 @@ public class WalletAPI {
         bill.setAppUser(appUser);
         billService.save(bill);
         return new ResponseEntity<>(walletService.save(wallet), HttpStatus.OK);
+    }
+    @PostMapping("/reqRecharge")
+    public ResponseEntity<RequestRecharge> reqRecharge(@RequestBody Money money){
+        RequestRecharge requestRecharge = new RequestRecharge();
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
+        requestRecharge.setAppUser(appUser);
+        requestRecharge.setMoney(money.getMoney());
+        Calendar cal = Calendar.getInstance();
+        Date date=new Date(cal.getTimeInMillis());
+        requestRecharge.setCreateAt(date);
+        requestRecharge.setStatus(true);
+        requestRecharge.setPaymentMethod("Banking");
+        return new ResponseEntity<>(requestRechargeService.save(requestRecharge),HttpStatus.OK);
     }
 }
