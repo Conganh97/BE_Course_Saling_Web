@@ -9,4 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Recharge {
     double money;
+    long idUser;
+    long idReq;
 }

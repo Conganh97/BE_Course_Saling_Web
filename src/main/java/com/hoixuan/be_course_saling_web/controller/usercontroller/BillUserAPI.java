@@ -17,30 +17,30 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("bill")
+@RequestMapping("/bill")
 public class BillUserAPI {
     @Autowired
     BillService billService;
     @Autowired
     AppUserService appUserService;
 
-    @GetMapping("billUser")
+    @GetMapping("/billUser")
     public ResponseEntity<List<Bill>> getAllUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
         return new ResponseEntity<>(billService.getAllByIdUser(appUser.getIdUser()), HttpStatus.OK);
     }
 
-    @GetMapping("allBill")
+    @GetMapping("/allBill")
     public ResponseEntity<List<Bill>> getAll() {
         return new ResponseEntity<>(billService.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping("billCourse/{idCourse}")
+    @GetMapping("/billCourse/{idCourse}")
     public ResponseEntity<List<Bill>> getAllBillByCourse(@PathVariable long idCourse) {
         return new ResponseEntity<>(billService.getAllByIdCourse(idCourse), HttpStatus.OK);
     }
-    @GetMapping("totalBillInMonth")
+    @GetMapping("/totalBillInMonth")
     public ResponseEntity<TotalBillInMonth> getTotalBillInMonth(){
         int date = new Date().getMonth() + 1;
         return new ResponseEntity<>(billService.totalBillInMonth(date),HttpStatus.OK);
