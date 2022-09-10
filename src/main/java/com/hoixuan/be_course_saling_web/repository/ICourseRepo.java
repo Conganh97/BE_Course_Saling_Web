@@ -13,7 +13,7 @@ import java.util.List;
 public interface ICourseRepo extends PagingAndSortingRepository<Course,Long> {
     Course findByIdCourse(long id);
 
-    @Query(nativeQuery = true,value = "SELECT * FROM course where status_course = 1 limit 3")
+    @Query(nativeQuery = true,value = "SELECT * FROM course where status_course = 1 order by enrolled desc limit 3")
     List<Course> getTrendingCourse ();
 @Query(nativeQuery = true,value = "SELECT * FROM course c join instructor i on c.instructor_id_instructor = i.id_instructor "
         + "where status_course = 1" + " and"
