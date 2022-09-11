@@ -34,18 +34,18 @@ public class CommentAPI {
     CourseService courseService;
 
 
-    @GetMapping("/getAll/{idCourse}")
-    public ResponseEntity<List<Comment>> getAllComment (@PathVariable long idCourse){
-        return new  ResponseEntity<>(commentService.findByComment(idCourse), HttpStatus.OK);
+    @GetMapping("/getAllCmt/{idCourse}")
+    public ResponseEntity<List<Comment>> getAllComment(@PathVariable long idCourse) {
+        return new ResponseEntity<>(commentService.findByComment(idCourse), HttpStatus.OK);
     }
 
-    @PostMapping("/createCmt")
-    public ResponseEntity<Comment> createCmt(@RequestBody CommentCourse commentCourse){
+    @PostMapping("/createCmt/{id}")
+    public ResponseEntity<Comment> createCmt(@PathVariable long id, @RequestBody CommentCourse commentCourse) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
         if (commentCourse.getContentCmt().equals("")) return null;
         Comment comments = new Comment();
-        comments.setCourse(courseService.findByIdCourse(commentCourse.getIdCourse()));
+        comments.setCourse(courseService.findByIdCourse(id));
         comments.setContentCmt(commentCourse.getContentCmt());
         comments.setTimeCmt(new Date());
         comments.setAppUser(appUser);
@@ -54,26 +54,23 @@ public class CommentAPI {
         return new ResponseEntity<>(comments, HttpStatus.CREATED);
     }
 
-    @PutMapping("/editCmt/{idCmt}")
-    public ResponseEntity<Comment> editCmt(@PathVariable long idCmt, @RequestBody Comment comment){
-        Optional<Comment> commentOptional = commentService.findById(idCmt);
-        if (!commentOptional.isPresent()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else {
-            comment.setIdComment(commentOptional.get().getIdComment());
+    @PostMapping("/editCmt/{idCmt}")
+    public ResponseEntity<Comment> editCmt(@PathVariable long idCmt, @RequestBody Comment comment) {
+            comment.setIdComment(idCmt);
             comment = commentService.saveCMT(comment);
             return new ResponseEntity<>(comment, HttpStatus.OK);
         }
+
+    @GetMapping("/deleteCmt/{id}")
+    public ResponseEntity<Comment> deleteCmt(@PathVariable long id) {
+        commentService.deleteCMT(id);
+        return new ResponseEntity<>(new Comment(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteCmt/{idCmt}")
-    public ResponseEntity<Comment> deleteCmt(@PathVariable long idCmt){
-            commentService.deleteCMT(idCmt);
-            return new ResponseEntity<>(new Comment(),HttpStatus.OK);
+    @GetMapping("/findByID/{id}")
+    public ResponseEntity<Comment> findCmtByID (@PathVariable long id) {
+        return new ResponseEntity<>(commentService.findById(id), HttpStatus.OK);
     }
-
-
-
 
 
 }

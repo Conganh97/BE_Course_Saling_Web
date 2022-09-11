@@ -30,4 +30,10 @@ public class RatingService {
     public void delete(long id){
         iRatingRepo.deleteById(id);
     }
+
+    public Rating findByUserAndIdCourse(long idUser, long idCourse){
+        return iRatingRepo.findRatingByAppUserIdUserAndCourseIdCourse(idUser,idCourse);
+    }
+
+
 }

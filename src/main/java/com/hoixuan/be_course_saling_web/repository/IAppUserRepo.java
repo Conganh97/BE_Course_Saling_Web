@@ -12,4 +12,9 @@ public interface IAppUserRepo extends CrudRepository<AppUser, Long> {
     AppUser findByUserName(String name);
 
     AppUser findByEmail(String email);
+
+    @Query(nativeQuery = true,value = "SELECT app_user_id_user FROM my_course where course_id_course = :idCourse")
+    AppUser findAppUserByMyCourse(@Param("idCourse") long idCourse);
+
+
 }

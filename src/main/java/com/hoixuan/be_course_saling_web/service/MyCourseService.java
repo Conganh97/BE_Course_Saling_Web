@@ -24,28 +24,28 @@ public class MyCourseService {
     LessonService lessonService;
 
 
-    public List<MyCourse> findAllMyCourseByIdUser (long idUser){
+    public List<MyCourse> findAllMyCourseByIdUser(long idUser) {
         return iMyCourseRepo.findAllMyCourseById(idUser);
     }
 
-    public long findIdUser () {
+    public long findIdUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return appUserService.findByUserName(userDetails.getUsername()).getIdUser();
     }
 
-    public MyCourse findMyCourseLearn (long idCourse){
+    public MyCourse findMyCourseLearn(long idCourse) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(appUserService.findByUserName(userDetails.getUsername()).getIdUser(),idCourse);
+        return iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(appUserService.findByUserName(userDetails.getUsername()).getIdUser(), idCourse);
     }
 
-    public MyCourse learned (long idMyCourse,long idLesson){
+    public MyCourse learned(long idMyCourse, long idLesson) {
         Lesson lesson = lessonService.findById(idLesson);
         MyCourse myCourse = iMyCourseRepo.findMyCourseByIdMyCourse(idMyCourse);
         myCourse.getLessonList().add(lesson);
         iMyCourseRepo.save(myCourse);
         ArrayList<Lesson> lessonList = (ArrayList<Lesson>) lessonService.getAllByIdCourse(myCourse.getCourse().getIdCourse());
-        if(myCourse.getLessonList().size() == 0){
+        if (myCourse.getLessonList().size() == 0) {
             myCourse.setCompletionProgress(0);
         } else {
             double completionProgress = ((double) myCourse.getLessonList().size()) / ((double) lessonList.size()) * 100;
@@ -55,7 +55,14 @@ public class MyCourseService {
         }
         return iMyCourseRepo.save(myCourse);
     }
-    public MyCourse save (MyCourse myCourse){
+
+    public MyCourse save(MyCourse myCourse) {
         return iMyCourseRepo.save(myCourse);
     }
+
+    public MyCourse findMyCourse (long idUser){
+        return iMyCourseRepo.findMyCourseByAppUserIdUser(idUser);
+    }
+
+
 }

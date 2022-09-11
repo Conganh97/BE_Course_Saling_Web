@@ -8,4 +8,8 @@ import java.util.List;
 
 public interface IRatingRepo extends PagingAndSortingRepository<Rating,Long> {
     List<Rating> getAllByCourseIdCourse(long id);
+
+    Rating findRatingByAppUserIdUser(long id);
+
+    Rating findRatingByAppUserIdUserAndCourseIdCourse(long idUser, long idCourse);
 }

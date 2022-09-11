@@ -22,13 +22,14 @@ public class CommentService {
         return iCommentRepo.save(comment);
     }
 
-    public Optional<Comment> findById(Long id){
-        return iCommentRepo.findById(id);
+    public Comment findById(Long id){
+        return iCommentRepo.findById(id).get();
     }
 
     public void deleteCMT(long idCmt){
         iCommentRepo.deleteById(idCmt);
     }
+
 
 
 }
