@@ -1,4 +1,4 @@
-package com.hoixuan.be_course_saling_web.controller;
+package com.hoixuan.be_course_saling_web.controller.usercontroller;
 
 import com.hoixuan.be_course_saling_web.config.filter.JwtAuthenticationFilter;
 import com.hoixuan.be_course_saling_web.model.AppUser;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserAPI {
 
     @Autowired
@@ -29,8 +29,14 @@ public class UserAPI {
     @Autowired
     JwtService jwtService;
 
+    @GetMapping("")
+    public ResponseEntity<AppUser> getProfile (){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
+        return new ResponseEntity<AppUser>(appUser,HttpStatus.OK);
+    }
 
-    @PutMapping("/change-profile")
+    @PostMapping("/change-profile")
     public ResponseEntity<AppUser> changeProfile(@RequestBody ChangeProfileUser changeProfileUser){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
@@ -41,11 +47,12 @@ public class UserAPI {
         appUser.setPhone(changeProfileUser.getPhone());
         appUser.setDescription(changeProfileUser.getDescription());
         appUser.setUserName(changeProfileUser.getUserName());
+        appUser.setEmail(changeProfileUser.getEmail());
         appUserService.save(appUser);
         return new ResponseEntity<>(appUser, HttpStatus.OK);
     }
 
-    @PutMapping("/change-avatar")
+    @PostMapping("/change-avatar")
     public ResponseEntity<AppUser> changeAvatar(@RequestBody ChangeAvatar changeAvatar){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser =appUserService.findByUserName(userDetails.getUsername());

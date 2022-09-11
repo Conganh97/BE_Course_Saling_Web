@@ -1,10 +1,13 @@
-package com.hoixuan.be_course_saling_web.controller;
+package com.hoixuan.be_course_saling_web.controller.usercontroller;
+
 
 import com.hoixuan.be_course_saling_web.model.Instructor;
+import com.hoixuan.be_course_saling_web.model.Role;
+
 import com.hoixuan.be_course_saling_web.model.dto.AccLogin;
+import com.hoixuan.be_course_saling_web.model.dto.SignUpForm;
 import com.hoixuan.be_course_saling_web.model.dto.UserToken;
 import com.hoixuan.be_course_saling_web.model.AppUser;
-import com.hoixuan.be_course_saling_web.model.Role;
 import com.hoixuan.be_course_saling_web.service.AppUserService;
 import com.hoixuan.be_course_saling_web.service.InstructorService;
 import com.hoixuan.be_course_saling_web.service.JwtService;
@@ -17,10 +20,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+
 @RestController
+@CrossOrigin("*")
 public class LoginAPI {
     @Autowired
     JwtService jwtService;
@@ -33,7 +40,7 @@ public class LoginAPI {
 
 
     @PostMapping("/login")
-    public UserToken login(@RequestBody AccLogin accLogin){
+    public UserToken login(@RequestBody AccLogin accLogin) {
         try {
             // Tạo ra 1 đối tượng Authentication.
             Authentication authentication = authenticationManager.authenticate(
@@ -41,21 +48,38 @@ public class LoginAPI {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtService.createToken(authentication);
             AppUser appUser1 = appUserService.findByUserName(accLogin.getUserName());
-            return new UserToken(appUser1.getIdUser(),appUser1.getUserName(),token,appUser1.getRoles());
+            return new UserToken(appUser1.getIdUser(), appUser1.getUserName(), token, appUser1.getRoles());
         } catch (Exception e) {
             return null;
         }
-
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AppUser> register(@RequestBody AppUser appUser){
-        Set<Role> roles = new HashSet<>();
-        Role role = new Role();
-        role.setId(2);
-        roles.add(role);
-        appUser.setRoles(roles);
-        return new ResponseEntity<>(appUserService.save(appUser), HttpStatus.OK);
+    public ResponseEntity<List<Boolean>> register(@RequestBody SignUpForm signUpForm) {
+        List<Boolean> result = new ArrayList<>();
+        AppUser appUserByEmail = appUserService.findByEMail(signUpForm.getEmail());
+        AppUser appUserByName = appUserService.findByUserName(signUpForm.getUserName());
+
+        boolean checkUserName = appUserByName == null;
+        boolean checkMail = appUserByEmail == null;
+        if (checkUserName && checkMail) {
+            AppUser user = new AppUser();
+            user.setUserName(signUpForm.getUserName());
+            user.setEmail(signUpForm.getEmail());
+            user.setPassword(signUpForm.getPassword());
+            Set<Role> roleSet = new HashSet<>();
+            Role role = new Role();
+            role.setId(1);
+            roleSet.add(role);
+            user.setRoles(roleSet);
+            appUserService.save(user);
+            result.add(true);
+            result.add(true);
+        } else {
+            result.add(checkUserName);
+            result.add(checkMail);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RestController
@@ -64,6 +88,7 @@ public class LoginAPI {
     public static class InstructorController {
         @Autowired
         InstructorService instructorService;
+
         @GetMapping("")
         public ResponseEntity<Iterable<Instructor>> showAllUser() {
             Iterable<Instructor> instructors = instructorService.findAll();
@@ -71,4 +96,7 @@ public class LoginAPI {
         }
 
     }
+
+
 }
+

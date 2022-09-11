@@ -3,15 +3,18 @@ package com.hoixuan.be_course_saling_web.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
-@Data
 @Entity
-public class Certificate {
+@Data
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idCertificate;
-    private String imageCertificate;
+    private long idComment;
+    private String contentCmt;
+    private Date timeRating;
     @ManyToOne
     private AppUser appUser;
+    @ManyToOne
+    private Course course;
 }

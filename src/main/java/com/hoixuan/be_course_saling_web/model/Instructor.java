@@ -15,13 +15,10 @@ public class Instructor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idInstructor;
-    @NotBlank
     private String nameInstructor;
     @Email
     private String emailInstructor;
-    @NotBlank
     private Date dateOfBirthInstructor;
-    @NotBlank
     private String phoneInstructor;
     private String AvatarInstructor;
     private int experience;
