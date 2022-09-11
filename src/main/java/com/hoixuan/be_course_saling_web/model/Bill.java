@@ -2,6 +2,9 @@ package com.hoixuan.be_course_saling_web.model;
 
 import lombok.Data;
 
+import net.bytebuddy.implementation.bytecode.assign.TypeCasting;
+
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -17,4 +20,8 @@ public class Bill {
     @ManyToOne
     private AppUser appUser;
     private double totalBill;
+
+    private boolean status;
+    private String contentBill;
+    private String paymentMethod;
 }

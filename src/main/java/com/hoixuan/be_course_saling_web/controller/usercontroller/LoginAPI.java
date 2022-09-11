@@ -4,12 +4,16 @@ package com.hoixuan.be_course_saling_web.controller.usercontroller;
 import com.hoixuan.be_course_saling_web.model.Instructor;
 import com.hoixuan.be_course_saling_web.model.Role;
 
+
+import com.hoixuan.be_course_saling_web.model.Role;
 import com.hoixuan.be_course_saling_web.model.dto.AccLogin;
 import com.hoixuan.be_course_saling_web.model.dto.SignUpForm;
 import com.hoixuan.be_course_saling_web.model.dto.UserToken;
 import com.hoixuan.be_course_saling_web.model.AppUser;
 import com.hoixuan.be_course_saling_web.service.AppUserService;
+
 import com.hoixuan.be_course_saling_web.service.InstructorService;
+
 import com.hoixuan.be_course_saling_web.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,33 +58,33 @@ public class LoginAPI {
         }
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<List<Boolean>> register(@RequestBody SignUpForm signUpForm) {
-        List<Boolean> result = new ArrayList<>();
-        AppUser appUserByEmail = appUserService.findByEMail(signUpForm.getEmail());
-        AppUser appUserByName = appUserService.findByUserName(signUpForm.getUserName());
-
-        boolean checkUserName = appUserByName == null;
-        boolean checkMail = appUserByEmail == null;
-        if (checkUserName && checkMail) {
-            AppUser user = new AppUser();
-            user.setUserName(signUpForm.getUserName());
-            user.setEmail(signUpForm.getEmail());
-            user.setPassword(signUpForm.getPassword());
-            Set<Role> roleSet = new HashSet<>();
-            Role role = new Role();
-            role.setId(1);
-            roleSet.add(role);
-            user.setRoles(roleSet);
-            appUserService.save(user);
-            result.add(true);
-            result.add(true);
-        } else {
-            result.add(checkUserName);
-            result.add(checkMail);
-        }
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
+//    @PostMapping("/register")
+//    public ResponseEntity<List<Boolean>> register(@RequestBody SignUpForm signUpForm) {
+//        List<Boolean> result = new ArrayList<>();
+////        AppUser appUserByEmail = appUserService.findByEMail(signUpForm.getEmail());
+//        AppUser appUserByName = appUserService.findByUserName(signUpForm.getUserName());
+//
+//        boolean checkUserName = appUserByName == null;
+////        boolean checkMail = appUserByEmail == null;
+////        if (checkUserName && checkMail) {
+//            AppUser user = new AppUser();
+//            user.setUserName(signUpForm.getUserName());
+//            user.setEmail(signUpForm.getEmail());
+//            user.setPassword(signUpForm.getPassword());
+//            Set<Role> roleSet = new HashSet<>();
+//            Role role = new Role();
+//            role.setId(1);
+//            roleSet.add(role);
+//            user.setRoles(roleSet);
+//            appUserService.save(user);
+//            result.add(true);
+//            result.add(true);
+//        } else {
+//            result.add(checkUserName);
+//            result.add(checkMail);
+//        }
+//        return new ResponseEntity<>(result, HttpStatus.OK);
+//    }
 
     @RestController
     @CrossOrigin("*")
@@ -99,4 +103,3 @@ public class LoginAPI {
 
 
 }
-

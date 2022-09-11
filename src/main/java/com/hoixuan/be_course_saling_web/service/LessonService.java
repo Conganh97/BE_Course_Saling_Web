@@ -20,7 +20,16 @@ public class LessonService {
         return iLessonRepo.save(lesson);
     }
 
+
     public Iterable<Lesson> findAll() {
         return iLessonRepo.findAll();
+
+//        public Lesson findById ( long id){
+//            return iLessonRepo.findById(id).get();
+//        }
+//        public void deleteById ( long id){
+//            iLessonRepo.deleteById(id);
+
+        }
     }
-}
+
