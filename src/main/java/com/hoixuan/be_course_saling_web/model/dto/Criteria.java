@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class Criteria {
     String nameCourse;
-    Integer from;
-    Integer to;
-    Integer experience;
+   int from;
+    int to;
+    int experience;
     String nameInstructor;
-    Integer rating;
+    int rating;
 }

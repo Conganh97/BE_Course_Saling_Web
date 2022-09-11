@@ -63,41 +63,63 @@ public class MyCourseAPI {
                 UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Wallet wallet = walletService.findByIdUser(appUserService.findByUserName(userDetails.getUsername()).getIdUser());
         Course course = courseService.findById(idCourse);
-
+        AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
+        Calendar cal = Calendar.getInstance();
+        Date date=new Date(cal.getTimeInMillis());
         if(wallet.getMoney() >= course.getPriceCourse()){
             if (myCourseService.checkBuy(idCourse)){
+                wallet.setMoney(wallet.getMoney()-course.getPriceCourse());
                 MyCourse myCourse = myCourseService.findMyCourseLearn(idCourse);
-                Calendar cal = Calendar.getInstance();
                 cal.add(Calendar.MONTH,course.getTimeCourse());
-                Date date=new Date(cal.getTimeInMillis());
                 myCourse.setExpire(date);
                 myCourse.setStatusMyCourse(true);
+                Bill bill = new Bill();
+                bill.setCourse(course);
+                bill.setAppUser(appUser);
+                bill.setCreateAt(date);
+                bill.setStatus(true);
+                bill.setContentBill("Buy Course " + course.getNameCourse());
+                bill.setPaymentMethod("Cash");
+                bill.setTotalBill(course.getPriceCourse());
+                billService.save(bill);
                 return new ResponseEntity<>(myCourseService.save(myCourse),HttpStatus.OK);
             } else {
                 wallet.setMoney(wallet.getMoney()-course.getPriceCourse());
                 walletService.save(wallet);
                 MyCourse myCourse = new MyCourse();
-                AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
                 myCourse.setCourse(course);
                 myCourse.setAppUser(appUser);
                 myCourse.setStatusMyCourse(true);
                 Set<Lesson> lessonlist = new HashSet<>();
                 myCourse.setLessonList(lessonlist);
                 myCourse.setCompletionProgress(0);
-                Calendar cal = Calendar.getInstance();
                 cal.add(Calendar.MONTH,course.getTimeCourse());
-                Date date=new Date(cal.getTimeInMillis());
-                myCourse.setExpire(date);
+                Date dateExpire=new Date(cal.getTimeInMillis());
+                myCourse.setExpire(dateExpire);
                 Bill bill = new Bill();
                 bill.setCourse(course);
                 bill.setAppUser(appUser);
+                bill.setContentBill("Buy Course " + course.getNameCourse());
                 bill.setCreateAt(date);
+                bill.setStatus(true);
                 bill.setTotalBill(course.getPriceCourse());
+                bill.setPaymentMethod("Cash");
                 billService.save(bill);
                 return new ResponseEntity<>(myCourseService.save(myCourse),HttpStatus.OK);
             }
 
-        } else return new ResponseEntity(HttpStatus.OK);
+        } else {
+            Bill bill = new Bill();
+            bill.setCourse(course);
+            bill.setAppUser(appUser);
+            bill.setCreateAt(date);
+            bill.setStatus(false);
+            bill.setTotalBill(course.getPriceCourse());
+            bill.setContentBill("Buy Course " + course.getNameCourse());
+            bill.setPaymentMethod("Cash");
+            billService.save(bill);
+            return new ResponseEntity(HttpStatus.OK);
+        }
     }
     @GetMapping("/find/{id}")
     public ResponseEntity<Course> findById(@PathVariable(required = true) int id) {

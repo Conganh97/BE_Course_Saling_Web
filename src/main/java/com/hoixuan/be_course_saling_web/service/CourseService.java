@@ -1,6 +1,7 @@
 package com.hoixuan.be_course_saling_web.service;
 
 import com.hoixuan.be_course_saling_web.model.Course;
+import com.hoixuan.be_course_saling_web.model.TotalBillInMonth;
 import com.hoixuan.be_course_saling_web.repository.ICourseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,7 +27,7 @@ public class CourseService {
     public List<Course> getTrendingCourse (){
         return iCourseRepo.getTrendingCourse();
     }
-    public List<Course> getAllCourseByCriteria (String nameCourse,Integer down,Integer up,Integer experience,String nameInstructor,Integer rating){
+    public List<Course> getAllCourseByCriteria (String nameCourse,int down,int up,int experience,String nameInstructor,int rating){
         return iCourseRepo.getAllCourseByCriteria(nameCourse,down,up,experience,nameInstructor,rating);
     }
     public List<Course> getAllNoPage(){
