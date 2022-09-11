@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("user")
+@RequestMapping("/user")
 public class CourseUserAPI {
     @Autowired
     CourseService courseService;
@@ -32,11 +32,11 @@ public class CourseUserAPI {
 
         }
     }
-    @GetMapping("allCourse")
+    @GetMapping("/allCourse")
     public ResponseEntity<List<Course>> getAll(){
         return new ResponseEntity<>(courseService.getAllNoPage(), HttpStatus.OK);
     }
-    @GetMapping("allInstructor")
+    @GetMapping("/allInstructor")
     public ResponseEntity<List<Instructor>> getAllInStructor(){
         return new ResponseEntity<>(instructorService.getAll(),HttpStatus.OK);
     }

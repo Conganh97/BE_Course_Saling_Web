@@ -22,7 +22,7 @@ import java.util.Set;
 
 @RestController
 @CrossOrigin("*")
-    @RequestMapping("course")
+    @RequestMapping("/course")
 public class MyCourseAPI {
     @Autowired
     AppUserService appUserService;

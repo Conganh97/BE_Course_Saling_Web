@@ -11,12 +11,12 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("lesson")
+@RequestMapping("/lesson")
 public class LessonAPI {
     @Autowired
     LessonService lessonService;
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity <List<Lesson>> getAllLessonById(@PathVariable long id){
         return new ResponseEntity<>(lessonService.getAllByIdCourse(id), HttpStatus.OK);
     }
