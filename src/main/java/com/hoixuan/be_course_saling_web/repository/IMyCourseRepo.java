@@ -18,8 +18,6 @@ public interface IMyCourseRepo extends CrudRepository<MyCourse, Long> {
 
     MyCourse findMyCourseByIdMyCourse (long idMyCourse);
 
-    MyCourse findMyCourseByAppUserIdUser (long idUser);
-
 
 
 

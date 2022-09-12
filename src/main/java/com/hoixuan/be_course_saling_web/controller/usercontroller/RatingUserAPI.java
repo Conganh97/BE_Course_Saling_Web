@@ -5,6 +5,7 @@ import com.hoixuan.be_course_saling_web.model.AppUser;
 import com.hoixuan.be_course_saling_web.model.Course;
 import com.hoixuan.be_course_saling_web.model.MyCourse;
 import com.hoixuan.be_course_saling_web.model.Rating;
+import com.hoixuan.be_course_saling_web.model.dto.RatingCourse;
 import com.hoixuan.be_course_saling_web.service.AppUserService;
 import com.hoixuan.be_course_saling_web.service.CourseService;
 import com.hoixuan.be_course_saling_web.service.MyCourseService;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -41,16 +43,17 @@ public class RatingUserAPI {
     }
 
     @PostMapping("/createRating/{idCourse}")
-    public ResponseEntity<Rating> saveRating(@RequestBody Rating rating, @PathVariable long idCourse){
+    public ResponseEntity<Rating> saveRating(@RequestBody Rating rating,@PathVariable long idCourse){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        MyCourse myCourse = myCourseService.findMyCourse(appUserService.findByUserName(userDetails.getUsername()).getIdUser());
-        Course course = courseService.findByIdCourse(idCourse);
         AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
-        myCourse.setCourse(course);
-        rating.setAppUser(appUser);
-        rating.setCourse(course);
-        rating.setNumStar(0);
-        return new ResponseEntity<>(ratingService.save(rating),HttpStatus.OK);
-
+        MyCourse myCourse = myCourseService.findByUserAndCourser(appUser.getIdUser(), idCourse);
+        if (myCourse != null) {
+            rating.setAppUser(myCourse.getAppUser());
+            rating.setCourse(myCourse.getCourse());
+            ratingService.save(rating);
+            return new ResponseEntity<>(rating, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
     }
 }

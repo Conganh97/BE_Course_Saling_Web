@@ -1,12 +1,12 @@
 package com.hoixuan.be_course_saling_web.service;
 import com.hoixuan.be_course_saling_web.model.Rating;
 import com.hoixuan.be_course_saling_web.repository.IRatingRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RatingService {
@@ -31,9 +31,12 @@ public class RatingService {
         iRatingRepo.deleteById(id);
     }
 
-    public Rating findByUserAndIdCourse(long idUser, long idCourse){
-        return iRatingRepo.findRatingByAppUserIdUserAndCourseIdCourse(idUser,idCourse);
+    public Optional<Rating> findRatingByAppUserIdUserAndCourseIdCourse(long idUser, long idCourse){
+       return iRatingRepo.findRatingByAppUserIdUserAndCourseIdCourse(idUser, idCourse);
+
     }
+
+
 
 
 }

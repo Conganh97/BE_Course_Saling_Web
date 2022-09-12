@@ -35,7 +35,6 @@ public class MyCourseService {
 
     public MyCourse findMyCourseLearn(long idCourse) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         return iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(appUserService.findByUserName(userDetails.getUsername()).getIdUser(), idCourse);
     }
 
@@ -60,9 +59,8 @@ public class MyCourseService {
         return iMyCourseRepo.save(myCourse);
     }
 
-    public MyCourse findMyCourse (long idUser){
-        return iMyCourseRepo.findMyCourseByAppUserIdUser(idUser);
-    }
-
+  public MyCourse findByUserAndCourser(long idUser,long idCourse){
+        return iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(idUser, idCourse);
+  }
 
 }
