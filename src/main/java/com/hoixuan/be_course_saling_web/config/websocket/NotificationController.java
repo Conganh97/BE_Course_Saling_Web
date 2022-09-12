@@ -24,8 +24,7 @@ public class NotificationController {
     NotificationService notificationService;
     @MessageMapping("/notification.send")
     public void sendMessage(@Payload Notification notification) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
+        AppUser appUser = appUserService.findByUserName(notification.getAppUser().getUserName());
         notification.setAppUser(appUser);
        Notification nofSend = notificationService.save(notification);
         simpMessagingTemplate.convertAndSend("/notification/admin", nofSend);
