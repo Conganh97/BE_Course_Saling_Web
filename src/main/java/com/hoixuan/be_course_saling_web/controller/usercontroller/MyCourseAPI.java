@@ -137,7 +137,7 @@ public class MyCourseAPI {
     }
     @GetMapping("/showUser")
     public List<AppUser> getRegister() {
-        return appUserService.getAll();
+        return appUserService.getAllUser();
     }
 
 }

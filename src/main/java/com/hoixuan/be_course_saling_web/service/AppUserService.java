@@ -71,6 +71,9 @@ public class AppUserService implements UserDetailsService {
     public void delete(long id){
      iAppUserRepo.deleteById(id);
     }
+    public List<AppUser> getAllUser(){
+        return iAppUserRepo.getAllAppUserUser();
+    }
 
 
 
