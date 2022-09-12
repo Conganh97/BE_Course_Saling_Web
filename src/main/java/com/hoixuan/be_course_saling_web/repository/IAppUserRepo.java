@@ -16,4 +16,9 @@ public interface IAppUserRepo extends CrudRepository<AppUser, Long> {
     AppUser findByEmail(String email);
     @Query(nativeQuery = true, value = "SELECT * FROM course_saling_web.app_user a join app_user_roles r on a.id_user = r.app_user_id_user where r.roles_id = 2")
     List<AppUser> getAllAppUserUser();
+
+    @Query(nativeQuery = true,value = "SELECT app_user_id_user FROM my_course where course_id_course = :idCourse")
+    AppUser findAppUserByMyCourse(@Param("idCourse") long idCourse);
+
+
 }

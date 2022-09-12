@@ -12,7 +12,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idComment;
     private String contentCmt;
-    private Date timeRating;
+    private Date timeCmt;
     @ManyToOne
     private AppUser appUser;
     @ManyToOne
