@@ -1,4 +1,4 @@
-package com.hoixuan.be_course_saling_web.dto;
+package com.hoixuan.be_course_saling_web.model.dto;
 import com.hoixuan.be_course_saling_web.model.Role;
 
 import java.util.Set;

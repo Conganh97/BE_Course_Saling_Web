@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -17,8 +16,11 @@ public class MyCourse {
     private AppUser appUser;
     @ManyToOne
     private Course course;
+    private double completionProgress;
     private Date expire;
     private boolean statusMyCourse = true;
     @OneToMany
     private Set<Lesson> lessonList;
+    @OneToOne
+    private Certificate certificate;
 }

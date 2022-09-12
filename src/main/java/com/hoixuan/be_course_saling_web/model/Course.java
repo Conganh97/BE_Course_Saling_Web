@@ -5,26 +5,21 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 @Data
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-                "nameCourse"
-        })
-})
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idCourse;
-    @NotBlank
     @Column(unique = true)
     private String nameCourse;
-    @NotBlank
     private double priceCourse;
-    @NotBlank
-    @Column(length = 10000)
+    private String imgCourse;
+    private int enrolled;
+    @Column(length = 100000)
+    private String shortDescription;
+    @Column(length = 100000)
     private String descriptionCourse;
     private int timeCourse;
     @ManyToOne
@@ -34,6 +29,4 @@ public class Course {
     private int numRating;
     @OneToOne
     private Quiz quiz;
-    @OneToOne
-    private Certificate certificate;
 }
