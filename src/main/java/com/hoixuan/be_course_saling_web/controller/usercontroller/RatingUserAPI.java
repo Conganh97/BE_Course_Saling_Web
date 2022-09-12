@@ -47,9 +47,12 @@ public class RatingUserAPI {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
         MyCourse myCourse = myCourseService.findByUserAndCourser(appUser.getIdUser(), idCourse);
-        if (myCourse != null) {
+        Optional<Rating> ratingOptional = ratingService.findRatingByAppUserIdUserAndCourseIdCourse(rating.getAppUser().getIdUser(), rating.getCourse().getIdCourse());
+        if (myCourse != null && ratingOptional.isPresent()) {
+            ratingService.delete(ratingOptional.get().getIdRating());
             rating.setAppUser(myCourse.getAppUser());
             rating.setCourse(myCourse.getCourse());
+
             ratingService.save(rating);
             return new ResponseEntity<>(rating, HttpStatus.OK);
         }else {
