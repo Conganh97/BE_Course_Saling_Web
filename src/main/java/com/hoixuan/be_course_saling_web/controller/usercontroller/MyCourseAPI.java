@@ -135,5 +135,9 @@ public class MyCourseAPI {
         List<Course> courseList = courseService.getTrendingCourse();
         return new ResponseEntity<>(courseService.getTrendingCourse(),HttpStatus.OK);
     }
+    @GetMapping("/showUser")
+    public List<AppUser> getRegister() {
+        return appUserService.getAll();
+    }
 
 }
