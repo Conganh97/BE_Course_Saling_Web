@@ -13,12 +13,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     //Xác định điểm cuối của máy chủ phía Server
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/socket").setAllowedOriginPatterns("http://localhost:6334*").withSockJS();
+        registry.addEndpoint("/socket").setAllowedOriginPatterns("http://localhost:4200").withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/app");
-        registry.enableSimpleBroker("/chatroom");
+        registry.enableSimpleBroker("/notification");
     }
 }

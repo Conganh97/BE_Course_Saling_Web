@@ -15,4 +15,5 @@ public class Notification {
     private Date timeNotification;
     @ManyToOne
     private AppUser appUser;
+    private boolean status;
 }
