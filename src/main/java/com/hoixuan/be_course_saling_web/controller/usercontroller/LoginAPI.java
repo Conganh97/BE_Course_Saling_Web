@@ -72,7 +72,7 @@ public class LoginAPI {
             user.setPassword(signUpForm.getPassword());
             Set<Role> roleSet = new HashSet<>();
             Role role = new Role();
-            role.setId(1);
+            role.setId(2);
             roleSet.add(role);
             user.setRoles(roleSet);
             appUserService.save(user);
