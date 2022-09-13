@@ -50,7 +50,16 @@ public class RatingUserAPI {
         if (myCourse != null) {
             rating.setAppUser(myCourse.getAppUser());
             rating.setCourse(myCourse.getCourse());
+            rating.setStatusRating(true);
             ratingService.save(rating);
+            List<Rating> ratings = ratingService.getAllByCourseId(idCourse);
+            int totalRating = 0;
+            for (Rating r :ratings) {
+                totalRating += r.getNumStar();
+            }
+            Course course = courseService.findByIdCourse(idCourse);
+            course.setNumRating(totalRating / ratings.size());
+            courseService.save(course);
             return new ResponseEntity<>(rating, HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.OK);

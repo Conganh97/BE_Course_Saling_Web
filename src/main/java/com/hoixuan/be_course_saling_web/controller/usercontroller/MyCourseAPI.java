@@ -87,6 +87,8 @@ public class MyCourseAPI {
             } else {
                 wallet.setMoney(wallet.getMoney()-course.getPriceCourse());
                 walletService.save(wallet);
+                course.setEnrolled(course.getEnrolled() + 1);
+                courseService.save(course);
                 MyCourse myCourse = new MyCourse();
                 myCourse.setCourse(course);
                 myCourse.setAppUser(appUser);
