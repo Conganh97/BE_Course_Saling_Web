@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface IRatingRepo extends PagingAndSortingRepository<Rating,Long> {
     List<Rating> getAllByCourseIdCourse(long id);
 
+    List<Rating> getAllByCourseIdCourseAndStatusRating(long id,boolean stattus);
+
 
 
     Optional<Rating> findRatingByAppUserIdUserAndCourseIdCourse(long idUser, long idCourse);

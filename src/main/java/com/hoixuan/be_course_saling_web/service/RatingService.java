@@ -21,6 +21,10 @@ public class RatingService {
     public List<Rating> getAllByCourseId(long id){
         return iRatingRepo.getAllByCourseIdCourse(id);
     }
+
+    public List<Rating>getAllByCourseIdAndStatus(long id){
+        return iRatingRepo.getAllByCourseIdCourseAndStatusRating(id,true);
+    }
     public Rating findById(long id){
         return iRatingRepo.findById(id).get();
     }

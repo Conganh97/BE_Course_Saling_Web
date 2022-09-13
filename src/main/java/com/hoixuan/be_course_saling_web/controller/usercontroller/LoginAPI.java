@@ -42,12 +42,17 @@ public class LoginAPI {
     public UserToken login(@RequestBody AccLogin accLogin) {
         try {
             // Tạo ra 1 đối tượng Authentication.
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(accLogin.getUserName(), accLogin.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String token = jwtService.createToken(authentication);
-            AppUser appUser1 = appUserService.findByUserName(accLogin.getUserName());
-            return new UserToken(appUser1.getIdUser(), appUser1.getUserName(), token, appUser1.getRoles());
+            AppUser appUser = appUserService.findByUserName(accLogin.getUserName());
+
+            if (appUser.isStatus()){
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(accLogin.getUserName(), accLogin.getPassword()));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                String token = jwtService.createToken(authentication);
+                AppUser appUser1 = appUserService.findByUserName(accLogin.getUserName());
+                return new UserToken(appUser1.getIdUser(), appUser1.getUserName(), token, appUser1.getRoles());
+            } else return null;
+
         } catch (Exception e) {
             return null;
         }
