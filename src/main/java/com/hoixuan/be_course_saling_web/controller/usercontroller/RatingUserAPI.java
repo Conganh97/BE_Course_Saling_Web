@@ -39,7 +39,7 @@ public class RatingUserAPI {
 
     @GetMapping("/getALlRating/{id}")
     public ResponseEntity<List<Rating>> getAllByCourse(@PathVariable long id){
-        return new ResponseEntity<>(ratingService.getAllByCourseId(id), HttpStatus.OK);
+        return new ResponseEntity<>(ratingService.getAllByCourseIdAndStatus(id), HttpStatus.OK);
     }
 
     @PostMapping("/createRating/{idCourse}")

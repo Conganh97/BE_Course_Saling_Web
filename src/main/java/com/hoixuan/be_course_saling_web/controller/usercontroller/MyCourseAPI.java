@@ -71,14 +71,15 @@ public class MyCourseAPI {
                 wallet.setMoney(wallet.getMoney()-course.getPriceCourse());
                 MyCourse myCourse = myCourseService.findMyCourseLearn(idCourse);
                 cal.add(Calendar.MONTH,course.getTimeCourse());
-                myCourse.setExpire(date);
+                Date date1=new Date(cal.getTimeInMillis());
+                myCourse.setExpire(date1);
                 myCourse.setStatusMyCourse(true);
                 Bill bill = new Bill();
                 bill.setCourse(course);
                 bill.setAppUser(appUser);
                 bill.setCreateAt(date);
                 bill.setStatus(true);
-                bill.setContentBill("Buy Course " + course.getNameCourse());
+                bill.setContentBill("Buy Course Again " + course.getNameCourse());
                 bill.setPaymentMethod("Cash");
                 bill.setTotalBill(course.getPriceCourse());
                 billService.save(bill);
@@ -142,5 +143,19 @@ public class MyCourseAPI {
     public List<AppUser> getRegister() {
         return appUserService.getAllUser();
     }
-
+    @GetMapping("/checkExpire")
+    public ResponseEntity<List<MyCourse>> checkExpire (){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
+        List <MyCourse> myCourses= myCourseService.findAllMyCourseByIdUser(appUser.getIdUser());
+        Calendar cal = Calendar.getInstance();
+        Date date=new Date(cal.getTimeInMillis());
+        for (MyCourse m: myCourses) {
+            if(date.compareTo(m.getExpire()) > 0){
+                m.setStatusMyCourse(false);
+                myCourseService.save(m);
+            }
+        }
+        return new ResponseEntity<>(myCourseService.findAllMyCourseByIdUser(appUser.getIdUser()),HttpStatus.OK);
+    }
 }
