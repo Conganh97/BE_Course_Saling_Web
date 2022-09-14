@@ -40,4 +40,9 @@ public class CourseUserAPI {
     public ResponseEntity<List<Instructor>> getAllInStructor(){
         return new ResponseEntity<>(instructorService.getAll(),HttpStatus.OK);
     }
+
+    @GetMapping("/courseNew")
+    public ResponseEntity<Course> getCourseNew(){
+        return new ResponseEntity<>(courseService.findCourseNew(),HttpStatus.OK);
+    }
 }
