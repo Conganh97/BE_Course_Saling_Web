@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface ICourseRepo extends PagingAndSortingRepository<Course,Long> {
     Course findByIdCourse(long id);
+@Query(nativeQuery = true,value = "SELECT * FROM course_saling_web.course where status_course = 1 order by id_course desc limit 1")
+    Course findCourseNew();
 
     @Query(nativeQuery = true,value = "SELECT * FROM course where status_course = 1 order by enrolled desc limit 3")
     List<Course> getTrendingCourse ();

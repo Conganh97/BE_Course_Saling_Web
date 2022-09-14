@@ -37,4 +37,8 @@ public class CourseService {
     public Course findByIdCourse(long id){
         return iCourseRepo.findByIdCourse(id);
     }
+
+    public Course findCourseNew (){
+        return iCourseRepo.findCourseNew();
+    }
 }

@@ -27,7 +27,7 @@ public class InstructorAdminAPI {
 
     @GetMapping("/instructor/{page}")
     public ResponseEntity<Page<Instructor>> getAllPage(@PathVariable int page) {
-        Page<Instructor> instructors = instructorService.getAllPage(PageRequest.of(page, 9, Sort.by("nameInstructor")));
+        Page<Instructor> instructors = instructorService.getAllPage(PageRequest.of(page, 6, Sort.by("nameInstructor")));
         return new ResponseEntity<>(instructors, HttpStatus.OK);
     }
 
