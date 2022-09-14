@@ -33,4 +33,8 @@ public class CourseService {
     public List<Course> getAllNoPage(){
         return (List<Course>) iCourseRepo.findAll();
     }
+
+    public Course findByIdCourse(long id){
+        return iCourseRepo.findByIdCourse(id);
+    }
 }

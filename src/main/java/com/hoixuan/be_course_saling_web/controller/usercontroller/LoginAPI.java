@@ -1,13 +1,13 @@
 package com.hoixuan.be_course_saling_web.controller.usercontroller;
-
-
 import com.hoixuan.be_course_saling_web.model.Role;
+import com.hoixuan.be_course_saling_web.model.Wallet;
 import com.hoixuan.be_course_saling_web.model.dto.AccLogin;
 import com.hoixuan.be_course_saling_web.model.dto.SignUpForm;
 import com.hoixuan.be_course_saling_web.model.dto.UserToken;
 import com.hoixuan.be_course_saling_web.model.AppUser;
 import com.hoixuan.be_course_saling_web.service.AppUserService;
 import com.hoixuan.be_course_saling_web.service.JwtService;
+import com.hoixuan.be_course_saling_web.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,18 +34,25 @@ public class LoginAPI {
 
     @Autowired
     AppUserService appUserService;
+    @Autowired
+    WalletService walletService;
 
 
     @PostMapping("/login")
     public UserToken login(@RequestBody AccLogin accLogin) {
         try {
             // Tạo ra 1 đối tượng Authentication.
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(accLogin.getUserName(), accLogin.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String token = jwtService.createToken(authentication);
-            AppUser appUser1 = appUserService.findByUserName(accLogin.getUserName());
-            return new UserToken(appUser1.getIdUser(), appUser1.getUserName(), token, appUser1.getRoles());
+            AppUser appUser = appUserService.findByUserName(accLogin.getUserName());
+
+            if (appUser.isStatus()){
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(accLogin.getUserName(), accLogin.getPassword()));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                String token = jwtService.createToken(authentication);
+                AppUser appUser1 = appUserService.findByUserName(accLogin.getUserName());
+                return new UserToken(appUser1.getIdUser(), appUser1.getUserName(), token, appUser1.getRoles());
+            } else return null;
+
         } catch (Exception e) {
             return null;
         }
@@ -65,10 +72,14 @@ public class LoginAPI {
             user.setPassword(signUpForm.getPassword());
             Set<Role> roleSet = new HashSet<>();
             Role role = new Role();
-            role.setId(1);
+            role.setId(2);
             roleSet.add(role);
             user.setRoles(roleSet);
             appUserService.save(user);
+            Wallet wallet = new Wallet();
+            wallet.setMoney(0);
+            wallet.setAppUser(user);
+            walletService.save(wallet);
             result.add(true);
             result.add(true);
         } else {

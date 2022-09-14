@@ -46,21 +46,21 @@ public class MyCourseAPI {
     }
 
     @GetMapping("/myCourseLearn/{idCourse}")
-    public ResponseEntity<MyCourse> getMyCourseLearn(@PathVariable long idCourse){
-        return new ResponseEntity<>(myCourseService.findMyCourseLearn(idCourse),HttpStatus.OK);
+    public ResponseEntity<MyCourse> getMyCourseLearn(@PathVariable long idCourse) {
+        return new ResponseEntity<>(myCourseService.findMyCourseLearn(idCourse), HttpStatus.OK);
     }
 
     @PostMapping("/learned")
-    public ResponseEntity<MyCourse> lessonLearned (@RequestBody LessonLearned lessonLearned){
-        LessonLearned a =lessonLearned;
-        myCourseService.learned(lessonLearned.getIdMyCourse(),lessonLearned.getIdLesson());
+    public ResponseEntity<MyCourse> lessonLearned(@RequestBody LessonLearned lessonLearned) {
+        LessonLearned a = lessonLearned;
+        myCourseService.learned(lessonLearned.getIdMyCourse(), lessonLearned.getIdLesson());
         MyCourse myCourse = myCourseService.findMyCourseLearn(lessonLearned.getIdMyCourse());
-        return new ResponseEntity<>(myCourse,HttpStatus.OK);
+        return new ResponseEntity<>(myCourse, HttpStatus.OK);
     }
 
     @GetMapping("/buyCourse/{idCourse}")
-    public ResponseEntity<MyCourse> buyCourse(@PathVariable long idCourse){
-                UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity<MyCourse> buyCourse(@PathVariable long idCourse) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Wallet wallet = walletService.findByIdUser(appUserService.findByUserName(userDetails.getUsername()).getIdUser());
         Course course = courseService.findById(idCourse);
         AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
@@ -71,14 +71,15 @@ public class MyCourseAPI {
                 wallet.setMoney(wallet.getMoney()-course.getPriceCourse());
                 MyCourse myCourse = myCourseService.findMyCourseLearn(idCourse);
                 cal.add(Calendar.MONTH,course.getTimeCourse());
-                myCourse.setExpire(date);
+                Date date1=new Date(cal.getTimeInMillis());
+                myCourse.setExpire(date1);
                 myCourse.setStatusMyCourse(true);
                 Bill bill = new Bill();
                 bill.setCourse(course);
                 bill.setAppUser(appUser);
                 bill.setCreateAt(date);
                 bill.setStatus(true);
-                bill.setContentBill("Buy Course " + course.getNameCourse());
+                bill.setContentBill("Buy Course Again " + course.getNameCourse());
                 bill.setPaymentMethod("Cash");
                 bill.setTotalBill(course.getPriceCourse());
                 billService.save(bill);
@@ -86,6 +87,8 @@ public class MyCourseAPI {
             } else {
                 wallet.setMoney(wallet.getMoney()-course.getPriceCourse());
                 walletService.save(wallet);
+                course.setEnrolled(course.getEnrolled() + 1);
+                courseService.save(course);
                 MyCourse myCourse = new MyCourse();
                 myCourse.setCourse(course);
                 myCourse.setAppUser(appUser);
@@ -121,23 +124,40 @@ public class MyCourseAPI {
             return new ResponseEntity(HttpStatus.OK);
         }
     }
+
     @GetMapping("/find/{id}")
     public ResponseEntity<Course> findById(@PathVariable(required = true) int id) {
-        return new ResponseEntity<>(courseService.findById(id),HttpStatus.OK);
+        return new ResponseEntity<>(courseService.findById(id), HttpStatus.OK);
     }
+
     @GetMapping("/{page}")
     public ResponseEntity<Page<Course>> getAll(@PathVariable(required = true) int page) {
         Page<Course> coursePage = courseService.getAll(PageRequest.of(page, 5, Sort.by("nameCourse")));
-        return  new ResponseEntity<>(coursePage, HttpStatus.OK);
+        return new ResponseEntity<>(coursePage, HttpStatus.OK);
     }
+
     @GetMapping("/trendingCourse")
-    public ResponseEntity <List<Course>> getTrendingCourse (){
+    public ResponseEntity<List<Course>> getTrendingCourse() {
         List<Course> courseList = courseService.getTrendingCourse();
-        return new ResponseEntity<>(courseService.getTrendingCourse(),HttpStatus.OK);
+        return new ResponseEntity<>(courseService.getTrendingCourse(), HttpStatus.OK);
     }
     @GetMapping("/showUser")
     public List<AppUser> getRegister() {
-        return appUserService.getAll();
+        return appUserService.getAllUser();
     }
-
+    @GetMapping("/checkExpire")
+    public ResponseEntity<List<MyCourse>> checkExpire (){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
+        List <MyCourse> myCourses= myCourseService.findAllMyCourseByIdUser(appUser.getIdUser());
+        Calendar cal = Calendar.getInstance();
+        Date date=new Date(cal.getTimeInMillis());
+        for (MyCourse m: myCourses) {
+            if(date.compareTo(m.getExpire()) > 0){
+                m.setStatusMyCourse(false);
+                myCourseService.save(m);
+            }
+        }
+        return new ResponseEntity<>(myCourseService.findAllMyCourseByIdUser(appUser.getIdUser()),HttpStatus.OK);
+    }
 }

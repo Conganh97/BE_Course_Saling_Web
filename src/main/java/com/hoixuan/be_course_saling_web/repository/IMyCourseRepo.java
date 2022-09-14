@@ -1,5 +1,6 @@
 package com.hoixuan.be_course_saling_web.repository;
 
+import com.hoixuan.be_course_saling_web.model.AppUser;
 import com.hoixuan.be_course_saling_web.model.MyCourse;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

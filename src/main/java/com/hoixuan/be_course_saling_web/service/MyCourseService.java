@@ -24,11 +24,11 @@ public class MyCourseService {
     LessonService lessonService;
 
 
-    public List<MyCourse> findAllMyCourseByIdUser (long idUser){
+    public List<MyCourse> findAllMyCourseByIdUser(long idUser) {
         return iMyCourseRepo.findAllMyCourseById(idUser);
     }
 
-    public long findIdUser () {
+    public long findIdUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return appUserService.findByUserName(userDetails.getUsername()).getIdUser();
     }
@@ -58,6 +58,11 @@ public class MyCourseService {
     public MyCourse save (MyCourse myCourse){
         return iMyCourseRepo.save(myCourse);
     }
+
+  public MyCourse findByUserAndCourser(long idUser,long idCourse){
+        return iMyCourseRepo.findMyCourseByAppUserIdUserAndCourseIdCourse(idUser, idCourse);
+  }
+
 
     public boolean checkBuy(long idCourse){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
