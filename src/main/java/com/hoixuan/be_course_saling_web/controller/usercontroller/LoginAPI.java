@@ -1,14 +1,18 @@
 package com.hoixuan.be_course_saling_web.controller.usercontroller;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson.JacksonFactory;
 import com.hoixuan.be_course_saling_web.model.Role;
 import com.hoixuan.be_course_saling_web.model.Wallet;
 import com.hoixuan.be_course_saling_web.model.dto.AccLogin;
 import com.hoixuan.be_course_saling_web.model.dto.SignUpForm;
+import com.hoixuan.be_course_saling_web.model.dto.TokenDto;
 import com.hoixuan.be_course_saling_web.model.dto.UserToken;
 import com.hoixuan.be_course_saling_web.model.AppUser;
 import com.hoixuan.be_course_saling_web.service.AppUserService;
 import com.hoixuan.be_course_saling_web.service.JwtService;
 import com.hoixuan.be_course_saling_web.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,10 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @RestController
@@ -36,6 +37,12 @@ public class LoginAPI {
     AppUserService appUserService;
     @Autowired
     WalletService walletService;
+
+    @Value("${google.id}")
+    private String idClient;
+
+    @Value("${mySecret.password}")
+    private String password;
 
 
     @PostMapping("/login")
@@ -88,4 +95,8 @@ public class LoginAPI {
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+
+
+
 }
