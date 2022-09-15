@@ -45,4 +45,5 @@ public class CourseUserAPI {
     public ResponseEntity<Course> getCourseNew(){
         return new ResponseEntity<>(courseService.findCourseNew(),HttpStatus.OK);
     }
+
 }
