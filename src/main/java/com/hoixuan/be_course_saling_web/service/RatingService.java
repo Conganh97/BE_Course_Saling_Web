@@ -39,8 +39,4 @@ public class RatingService {
        return iRatingRepo.findRatingByAppUserIdUserAndCourseIdCourse(idUser, idCourse);
 
     }
-
-
-
-
 }
