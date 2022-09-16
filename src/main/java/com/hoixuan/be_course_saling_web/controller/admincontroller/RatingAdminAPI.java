@@ -42,7 +42,13 @@ public class RatingAdminAPI {
     }
     @GetMapping("/allRating/{page}")
     public ResponseEntity<Page<Rating>>getAllFalse(@PathVariable int page){
-        Page<Rating> ratings = ratingService.getAll(PageRequest.of(page, 5,Sort.by("timeRating").descending()));
+        Page<Rating> ratings = ratingService.getAll(PageRequest.of(page, 5,Sort.by("timeRating").ascending()));
+        return  new ResponseEntity<>(ratings, HttpStatus.OK);
+    }
+
+    @GetMapping("/allRating/{page}/{search}")
+    public ResponseEntity<Page<Rating>>getAllFalseByNameCourse(@PathVariable int page,@PathVariable String search){
+        Page<Rating> ratings = ratingService.getAllByStatusAndNameCourse(PageRequest.of(page, 5,Sort.by("timeRating").ascending()),false,search);
         return  new ResponseEntity<>(ratings, HttpStatus.OK);
     }
 }

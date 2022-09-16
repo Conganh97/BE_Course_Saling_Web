@@ -22,10 +22,14 @@ public class CourseAdminAPI {
     CourseService courseService;
     @Autowired
     QuizService quizService;
-
     @GetMapping("/{page}")
     public ResponseEntity<Page<Course>> getAll(@PathVariable(required = true) int page) {
         Page<Course> coursePage = courseService.getAll(PageRequest.of(page, 5, Sort.by("nameCourse")));
+        return  new ResponseEntity<>(coursePage, HttpStatus.OK);
+    }
+    @GetMapping("/{page}/{search}")
+    public ResponseEntity<Page<Course>> getAllByName(@PathVariable(required = true) int page,@PathVariable(required = true) String search) {
+        Page<Course> coursePage = courseService.findAllByNameCourseContaining(PageRequest.of(page, 5, Sort.by("nameCourse")),search);
         return  new ResponseEntity<>(coursePage, HttpStatus.OK);
     }
     @GetMapping("/find/{id}")

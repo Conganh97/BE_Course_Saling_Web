@@ -19,6 +19,9 @@ public class InstructorService {
     public Page<Instructor> getAllPage(Pageable pageable){
         return iInstructorRepo.findAll(pageable);
     }
+    public Page<Instructor> getAllPageByName(Pageable pageable,String name){
+        return iInstructorRepo.findAllByNameInstructorContaining(pageable,name);
+    }
     public Instructor save(Instructor instructor){
         return iInstructorRepo.save(instructor);
     }

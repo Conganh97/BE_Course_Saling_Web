@@ -15,6 +15,9 @@ public class RatingService {
     public Page<Rating> getAll(Pageable pageable){
         return iRatingRepo.findAll(pageable);
     }
+    public Page<Rating> getAllByStatusAndNameCourse(Pageable pageable,boolean status,String name){
+        return iRatingRepo.findAllByStatusRatingAndCourseNameCourseContaining(pageable,status,name);
+    }
     public RatingService(IRatingRepo iRatingRepo) {
         this.iRatingRepo = iRatingRepo;
     }
