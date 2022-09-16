@@ -74,4 +74,14 @@ public class MyCourseService {
             return false;
         }
     }
+    public List<MyCourse> searchByName(String nameSearch){
+       List<Long> listid= iMyCourseRepo.searchByName(nameSearch);
+       List<MyCourse> courseList=new ArrayList<>();
+        for (Long id: listid
+             ) {
+            courseList.add(iMyCourseRepo.findById(id).get());
+        }
+
+        return courseList;
+    }
 }

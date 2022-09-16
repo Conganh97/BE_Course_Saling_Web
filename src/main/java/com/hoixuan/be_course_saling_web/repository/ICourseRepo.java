@@ -31,4 +31,5 @@ public interface ICourseRepo extends PagingAndSortingRepository<Course,Long> {
                                          @Param("experience") int experience,
                                          @Param("nameInstructor") String nameInstructor,
                                          @Param("rating") int rating);
+
 }
