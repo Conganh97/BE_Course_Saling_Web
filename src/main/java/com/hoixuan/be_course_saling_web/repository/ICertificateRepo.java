@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ICertificateRepo extends CrudRepository<Certificate,Long> {
     List<Certificate> findAllByAppUserIdUser (long idUser);
+
+    Certificate findByAppUserIdUserAndCourseIdCourse (long idUser,long idCourse);
 }

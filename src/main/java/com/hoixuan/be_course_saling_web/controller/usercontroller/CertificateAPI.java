@@ -39,6 +39,12 @@ public class CertificateAPI {
         AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
         return new ResponseEntity<>(certificateService.findById(appUser.getIdUser()),HttpStatus.OK);
     }
+    @GetMapping("/findCer/{idCourse}")
+    public ResponseEntity<Certificate> findCer(@PathVariable long idCourse){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
+        return new ResponseEntity<>(certificateService.findByUserAndCourse(appUser.getIdUser(),idCourse),HttpStatus.OK);
+    }
 
 }
 

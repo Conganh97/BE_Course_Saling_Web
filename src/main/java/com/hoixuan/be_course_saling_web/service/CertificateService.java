@@ -22,4 +22,7 @@ public class CertificateService {
     public List<Certificate> findById(long idUser){
         return iCertificateRepo.findAllByAppUserIdUser(idUser);
     }
+    public Certificate findByUserAndCourse(long idUser,long idCourse){
+        return iCertificateRepo.findByAppUserIdUserAndCourseIdCourse(idUser,idCourse);
+    }
 }
