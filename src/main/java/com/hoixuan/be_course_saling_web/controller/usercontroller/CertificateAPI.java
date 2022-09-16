@@ -2,6 +2,7 @@ package com.hoixuan.be_course_saling_web.controller.usercontroller;
 
 import com.hoixuan.be_course_saling_web.model.AppUser;
 import com.hoixuan.be_course_saling_web.model.Certificate;
+import com.hoixuan.be_course_saling_web.model.dto.CertificateDTO;
 import com.hoixuan.be_course_saling_web.service.AppUserService;
 import com.hoixuan.be_course_saling_web.service.CertificateService;
 import com.hoixuan.be_course_saling_web.service.CourseService;
@@ -12,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 @RestController
@@ -29,7 +32,14 @@ public class CertificateAPI {
         return new ResponseEntity<>(certificateService.getAll(), HttpStatus.OK);
     }
     @PostMapping("/save-certificate")
-    public ResponseEntity<Certificate> saveCertificate(@RequestBody Certificate certificate){
+    public ResponseEntity<Certificate> saveCertificate(@RequestBody CertificateDTO certificateDTO){
+        Certificate certificate = new Certificate();
+        certificate.setImageCertificate(certificateDTO.getImg());
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
+        certificate.setAppUser(appUser);
+        certificate.setCourse(courseService.findByIdCourse(certificateDTO.getIdCourse()));
+        certificate.setCreateAt(certificateDTO.getCreateAt());
         return new ResponseEntity<>(certificateService.save(certificate),HttpStatus.OK);
     }
 
