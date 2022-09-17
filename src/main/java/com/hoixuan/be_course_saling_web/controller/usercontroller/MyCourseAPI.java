@@ -160,4 +160,8 @@ public class MyCourseAPI {
         }
         return new ResponseEntity<>(myCourseService.findAllMyCourseByIdUser(appUser.getIdUser()),HttpStatus.OK);
     }
+    @GetMapping("/checkBuy/{idCourse}")
+    public ResponseEntity<Boolean> checkBuy(@PathVariable long idCourse){
+        return new ResponseEntity<>(myCourseService.checkBuy(idCourse),HttpStatus.OK);
+    }
 }

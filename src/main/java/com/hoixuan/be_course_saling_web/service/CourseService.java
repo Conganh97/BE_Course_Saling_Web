@@ -14,6 +14,9 @@ import java.util.List;
 public class CourseService {
     @Autowired
     ICourseRepo iCourseRepo;
+    public Page<Course>findAllByNameCourseContaining(Pageable pageable,String name){
+        return iCourseRepo.findAllByNameCourseContaining(pageable,name);
+    }
     public Page<Course> getAll(Pageable pageable){
         return iCourseRepo.findAll(pageable);
     }

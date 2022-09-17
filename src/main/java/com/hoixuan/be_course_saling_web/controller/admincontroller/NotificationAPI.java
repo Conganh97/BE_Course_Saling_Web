@@ -1,5 +1,6 @@
 package com.hoixuan.be_course_saling_web.controller.admincontroller;
 import com.hoixuan.be_course_saling_web.model.Notification;
+import com.hoixuan.be_course_saling_web.model.dto.NotificationID;
 import com.hoixuan.be_course_saling_web.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,10 +21,11 @@ public class NotificationAPI {
         return new ResponseEntity<>(notificationService.getNewNotification(), HttpStatus.OK);
     }
     @PostMapping("/notification/done")
-    public ResponseEntity<Notification> save(@RequestBody List<Notification> notifications) {
-        for (Notification n:notifications) {
-            n.setStatus(true);
-            notificationService.save(n);
+    public ResponseEntity<Notification> save(@RequestBody List<NotificationID> notifications) {
+        for (NotificationID n:notifications) {
+            Notification noti = notificationService.findById(n.getIdNotification());
+            noti.setStatus(true);
+            notificationService.save(noti);
         }
         return new ResponseEntity<>(new Notification(), HttpStatus.OK);
     }

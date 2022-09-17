@@ -30,7 +30,11 @@ public class InstructorAdminAPI {
         Page<Instructor> instructors = instructorService.getAllPage(PageRequest.of(page, 6, Sort.by("nameInstructor")));
         return new ResponseEntity<>(instructors, HttpStatus.OK);
     }
-
+    @GetMapping("/instructor/{page}/{search}")
+    public ResponseEntity<Page<Instructor>> getAllPageByName(@PathVariable int page,@PathVariable(required = true) String search) {
+        Page<Instructor> instructors = instructorService.getAllPageByName(PageRequest.of(page, 6, Sort.by("nameInstructor")),search);
+        return new ResponseEntity<>(instructors, HttpStatus.OK);
+    }
     @PostMapping("/instructor/save")
     public ResponseEntity<Instructor> save(@RequestBody Instructor instructor) {
         return new ResponseEntity<>(instructorService.save(instructor), HttpStatus.OK);

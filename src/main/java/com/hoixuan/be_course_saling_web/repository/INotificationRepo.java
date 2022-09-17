@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface INotificationRepo extends CrudRepository<Notification,Long> {
-    @Query(nativeQuery = true,value = "SELECT * FROM course_saling_web.notification where status=false order by time_notification asc limit 5;")
+    @Query(nativeQuery = true,value = "SELECT * FROM course_saling_web.notification where status=false order by time_notification desc limit 5;")
     List<Notification> getNotificationNew();
 }
