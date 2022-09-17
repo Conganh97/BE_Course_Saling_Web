@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IScoreQuizRepo extends CrudRepository<ScoreQuiz,Long> {
     List<ScoreQuiz> findAllByQuiz_IdQuiz(long id);
+    List<ScoreQuiz> findAllByAppUserIdUserAndQuizIdQuiz(long idUser,long idQuiz);
 }

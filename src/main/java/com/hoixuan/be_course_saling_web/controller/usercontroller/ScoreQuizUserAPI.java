@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/scorequiz")
@@ -25,4 +27,11 @@ public class ScoreQuizUserAPI {
         scoreQuiz.setAppUser(appUser);
         return new ResponseEntity<>(scoreQuizService.save(scoreQuiz), HttpStatus.OK);
     }
+    @GetMapping("/allUser/{idQuiz}")
+    public ResponseEntity<List<ScoreQuiz>> getAllQuizUser(@PathVariable long idQuiz){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
+        return new ResponseEntity<>(scoreQuizService.getAllByUser(idQuiz,appUser.getIdUser()),HttpStatus.OK);
+    }
+
 }
