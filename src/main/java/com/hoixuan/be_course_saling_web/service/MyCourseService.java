@@ -74,4 +74,8 @@ public class MyCourseService {
             return false;
         }
     }
+
+    public List<MyCourse> findByExpire(Boolean isExpire){
+       return iMyCourseRepo.findMyCourseByStatusMyCourse(isExpire);
+    }
 }
