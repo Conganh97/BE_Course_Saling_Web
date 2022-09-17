@@ -33,6 +33,8 @@ public class LoginAPI {
     @Autowired
     WalletService walletService;
 
+    private String email;
+
     @Value("${google.id}")
     private String idClient;
 

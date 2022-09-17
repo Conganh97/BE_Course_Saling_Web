@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/login","/register","/**").permitAll()
+        http.authorizeRequests().antMatchers("/login","/register","/**", "/google-login").permitAll()
                 .and().authorizeRequests().antMatchers("/user/**","/course","/wallet","/lesson","/bill","/comment").hasAnyRole("ADMIN","USER")
                 .and().authorizeRequests().antMatchers("/admin/**","/bill").hasRole("ADMIN")
                 .and().csrf().disable();

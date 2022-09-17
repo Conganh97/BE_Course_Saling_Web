@@ -12,6 +12,7 @@ public interface IAppUserRepo extends CrudRepository<AppUser, Long> {
     AppUser findByUserNameS(@Param("name") String name);
 
     AppUser findByUserName(String name);
+    public boolean existsByEmail(String email);
 
     AppUser findByEmail(String email);
     @Query(nativeQuery = true, value = "SELECT * FROM course_saling_web.app_user a join app_user_roles r on a.id_user = r.app_user_id_user where r.roles_id = 2")

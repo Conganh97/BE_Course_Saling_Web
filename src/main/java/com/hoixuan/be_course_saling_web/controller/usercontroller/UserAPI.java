@@ -56,7 +56,6 @@ public class UserAPI {
     public ResponseEntity<AppUser> changeAvatar(@RequestBody ChangeAvatar changeAvatar){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
-
         appUser.setAvatarSrc(changeAvatar.getAvatar());
         appUserService.save(appUser);
         return new ResponseEntity<>(appUser, HttpStatus.OK);

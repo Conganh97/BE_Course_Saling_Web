@@ -164,4 +164,18 @@ public class MyCourseAPI {
     public ResponseEntity<Boolean> checkBuy(@PathVariable long idCourse){
         return new ResponseEntity<>(myCourseService.checkBuy(idCourse),HttpStatus.OK);
     }
+
+    @GetMapping("/findExpired")
+    public ResponseEntity<List<MyCourse>> findByExpired(){
+        List<MyCourse> myCourses = myCourseService.findByExpire(false);
+        return new ResponseEntity<>(myCourses, HttpStatus.OK);
+    }
+
+    @GetMapping("/findExpire")
+    public ResponseEntity<List<MyCourse>> findByExpire(){
+        List<MyCourse> myCourses = myCourseService.findByExpire(true);
+        return new ResponseEntity<>(myCourses, HttpStatus.OK);
+    }
+
+
 }
