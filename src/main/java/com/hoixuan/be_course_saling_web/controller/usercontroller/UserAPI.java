@@ -40,7 +40,6 @@ public class UserAPI {
     public ResponseEntity<AppUser> changeProfile(@RequestBody ChangeProfileUser changeProfileUser){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
-
         appUser.setFullName(changeProfileUser.getFullName());
         appUser.setAddress(changeProfileUser.getAddress());
         appUser.setDateOfBirth(changeProfileUser.getDateOfBirth());
@@ -51,12 +50,10 @@ public class UserAPI {
         appUserService.save(appUser);
         return new ResponseEntity<>(appUser, HttpStatus.OK);
     }
-
     @PostMapping("/change-avatar")
     public ResponseEntity<AppUser> changeAvatar(@RequestBody ChangeAvatar changeAvatar){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AppUser appUser =appUserService.findByUserName(userDetails.getUsername());
-
+        AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
         appUser.setAvatarSrc(changeAvatar.getAvatar());
         appUserService.save(appUser);
         return new ResponseEntity<>(appUser, HttpStatus.OK);
