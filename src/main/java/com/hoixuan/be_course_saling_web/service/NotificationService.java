@@ -14,8 +14,11 @@ public class NotificationService {
     public NotificationService(INotificationRepo iNotificationRepo) {
         this.iNotificationRepo = iNotificationRepo;
     }
-    public List<Notification> getNewNotification(){
-        return iNotificationRepo.getNotificationNew();
+    public List<Notification> getNewNotification(String sendTo){
+        return iNotificationRepo.getNotificationNew(sendTo);
+    }
+    public List<Notification> getNewNotificationUser(boolean status,String sendTo,String name){
+        return iNotificationRepo.findAllByAppUserUserNameAndStatusAndSendTo(name,status,sendTo);
     }
     public Notification save(Notification notification){
         return iNotificationRepo.save(notification);

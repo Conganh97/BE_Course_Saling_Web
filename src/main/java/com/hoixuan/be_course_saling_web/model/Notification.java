@@ -16,4 +16,7 @@ public class Notification {
     @ManyToOne
     private AppUser appUser;
     private boolean status;
+    private String sendTo;
+    private String type;
+    private String linkId;
 }

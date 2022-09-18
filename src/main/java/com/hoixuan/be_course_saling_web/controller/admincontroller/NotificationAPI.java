@@ -16,9 +16,9 @@ public class NotificationAPI {
     @Autowired
     NotificationService notificationService;
 
-    @GetMapping("/notification")
-    public ResponseEntity<List<Notification>> getAll() {
-        return new ResponseEntity<>(notificationService.getNewNotification(), HttpStatus.OK);
+    @GetMapping("/notification/{sendTo}")
+    public ResponseEntity<List<Notification>> getAll(@PathVariable String sendTo) {
+        return new ResponseEntity<>(notificationService.getNewNotification(sendTo), HttpStatus.OK);
     }
     @PostMapping("/notification/done")
     public ResponseEntity<Notification> save(@RequestBody List<NotificationID> notifications) {

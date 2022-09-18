@@ -29,4 +29,7 @@ public class RequestRechargeService {
     public RequestRecharge save (RequestRecharge requestRecharge){
         return iRequestRechargeRepo.save(requestRecharge);
     }
+    public List<RequestRecharge> getAllByUser (long idUser){
+        return (List<RequestRecharge>) iRequestRechargeRepo.findByAppUserIdUser(idUser);
+    }
 }
