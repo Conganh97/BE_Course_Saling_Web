@@ -19,4 +19,6 @@ public interface IRatingRepo extends PagingAndSortingRepository<Rating,Long> {
 
 
 
+
+
 }

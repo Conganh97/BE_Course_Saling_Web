@@ -22,4 +22,6 @@ public class Instructor {
     private String phoneInstructor;
     private String AvatarInstructor;
     private int experience;
+    private String instructorDescribe;
+
 }
