@@ -35,11 +35,6 @@ public class LoginAPI {
 
     private String email;
 
-    @Value("${google.id}")
-    private String idClient;
-
-    @Value("${mySecret.password}")
-    private String password;
 
 
     @PostMapping("/login")

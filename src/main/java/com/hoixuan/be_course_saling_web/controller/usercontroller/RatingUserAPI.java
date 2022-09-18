@@ -38,18 +38,18 @@ public class RatingUserAPI {
     MyCourseService myCourseService;
 
     @GetMapping("/getALlRating/{id}")
-    public ResponseEntity<List<Rating>> getAllByCourse(@PathVariable long id){
+    public ResponseEntity<List<Rating>> getAllByCourse(@PathVariable long id) {
         return new ResponseEntity<>(ratingService.getAllByCourseIdAndStatus(id), HttpStatus.OK);
     }
 
     @PostMapping("/createRating/{idCourse}")
-    public ResponseEntity<Rating> saveRating(@RequestBody Rating rating,@PathVariable long idCourse){
+    public ResponseEntity<Rating> saveRating(@RequestBody Rating rating, @PathVariable long idCourse) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
         MyCourse myCourse = myCourseService.findByUserAndCourser(appUser.getIdUser(), idCourse);
-        Optional<Rating> ratingOptional= ratingService.findRatingByAppUserIdUserAndCourseIdCourse(appUser.getIdUser(), myCourse.getCourse().getIdCourse());
+        Optional<Rating> ratingOptional = ratingService.findRatingByAppUserIdUserAndCourseIdCourse(appUser.getIdUser(), myCourse.getCourse().getIdCourse());
         if (myCourse != null) {
-            if (ratingOptional.isPresent()){
+            if (ratingOptional.isPresent()) {
                 return new ResponseEntity<>(HttpStatus.OK);
             }
             rating.setAppUser(myCourse.getAppUser());
@@ -58,15 +58,22 @@ public class RatingUserAPI {
             ratingService.save(rating);
             List<Rating> ratings = ratingService.getAllByCourseId(idCourse);
             int totalRating = 0;
-            for (Rating r :ratings) {
+            for (Rating r : ratings) {
                 totalRating += r.getNumStar();
             }
             Course course = courseService.findByIdCourse(idCourse);
             course.setNumRating(totalRating / ratings.size());
             courseService.save(course);
             return new ResponseEntity<>(rating, HttpStatus.OK);
-        }else {
+        } else {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
+
+    @GetMapping("/checkRated/{idCourse}")
+    public ResponseEntity<Boolean> checkRated(@PathVariable long idCourse) {
+        return new ResponseEntity<>(ratingService.checkRated(idCourse), HttpStatus.OK);
+    }
+
+
 }
