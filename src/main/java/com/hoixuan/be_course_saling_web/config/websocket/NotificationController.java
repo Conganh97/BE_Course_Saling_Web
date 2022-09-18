@@ -27,7 +27,7 @@ public class NotificationController {
         AppUser appUser = appUserService.findByUserName(notification.getAppUser().getUserName());
         notification.setAppUser(appUser);
        Notification nofSend = notificationService.save(notification);
-        simpMessagingTemplate.convertAndSend("/notification/admin", nofSend);
+        simpMessagingTemplate.convertAndSend("/notification/"+notification.getSendTo(), nofSend);
 
     }
 }
