@@ -27,6 +27,7 @@ public class Course {
     private int quantity = 0;
     private boolean statusCourse = true;
     private int numRating = 5 ;
+    private int numLesson = 0;
     @OneToOne
     private Quiz quiz;
 }

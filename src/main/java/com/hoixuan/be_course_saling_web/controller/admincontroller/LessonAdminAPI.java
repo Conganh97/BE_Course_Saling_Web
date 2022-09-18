@@ -29,6 +29,8 @@ public class LessonAdminAPI {
     public ResponseEntity<Lesson> save(@PathVariable long id,@RequestBody Lesson lesson) {
         Course course = courseService.findById(id);
         lesson.setCourse(course);
+        course.setNumLesson(course.getNumLesson() + 1);
+        courseService.save(course);
         return new ResponseEntity<>(lessonService.save(lesson), HttpStatus.OK);
     }
     @GetMapping("/lesson/delete/{id}")
