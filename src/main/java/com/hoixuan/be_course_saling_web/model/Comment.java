@@ -11,6 +11,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idComment;
+    @Column(length = 1000000)
     private String contentCmt;
     private Date timeCmt;
     @ManyToOne

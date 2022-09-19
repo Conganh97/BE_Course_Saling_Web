@@ -2,10 +2,7 @@ package com.hoixuan.be_course_saling_web.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.sql.Date;
@@ -20,8 +17,10 @@ public class Instructor {
     private String emailInstructor;
     private Date dateOfBirthInstructor;
     private String phoneInstructor;
+    @Column(length = 1000000)
     private String AvatarInstructor;
     private int experience;
+    @Column(length = 1000000)
     private String instructorDescribe;
 
 }

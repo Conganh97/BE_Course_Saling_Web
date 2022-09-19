@@ -15,6 +15,7 @@ public class Course {
     @Column(unique = true)
     private String nameCourse;
     private double priceCourse;
+    @Column(length = 1000000)
     private String imgCourse;
     private int enrolled;
     @Column(length = 100000)
