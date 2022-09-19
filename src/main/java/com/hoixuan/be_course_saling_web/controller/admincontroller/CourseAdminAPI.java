@@ -43,6 +43,7 @@ public class CourseAdminAPI {
         quiz.setNameQuiz(nameQuiz);
         quiz.setNumberOfQuiz(0);
         quiz.setTimeQuiz(10);
+        course.setStatusCourse(false);
         course.setQuiz(quizService.save(quiz));
         return new ResponseEntity<>(courseService.save(course),HttpStatus.OK);
     }

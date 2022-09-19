@@ -17,6 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +57,9 @@ public class RatingUserAPI {
             rating.setAppUser(myCourse.getAppUser());
             rating.setCourse(myCourse.getCourse());
             rating.setStatusRating(true);
+            Calendar cal = Calendar.getInstance();
+            Date date=new Date(cal.getTimeInMillis());
+            rating.setTimeRating(date);
             ratingService.save(rating);
             List<Rating> ratings = ratingService.getAllByCourseId(idCourse);
             int totalRating = 0;

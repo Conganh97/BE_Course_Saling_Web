@@ -12,6 +12,7 @@ public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idRating;
+    @Column(length = 1000000)
     private String contentRating;
     private int numStar;
     private boolean statusRating;

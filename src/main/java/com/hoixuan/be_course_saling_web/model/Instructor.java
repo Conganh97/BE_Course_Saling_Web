@@ -17,10 +17,10 @@ public class Instructor {
     private String emailInstructor;
     private Date dateOfBirthInstructor;
     private String phoneInstructor;
-    @Column(length = 10000000)
+    @Column(length = 1000000)
     private String AvatarInstructor;
     private int experience;
-    @Column(length = 10000000)
+    @Column(length = 1000000)
     private String instructorDescribe;
 
 }

@@ -13,6 +13,7 @@ public class Lesson {
     private long idLesson;
     private String nameLesson;
     private String contentLesson;
+    @Column(length = 1000000)
     private String linkVideo;
     private String timeLesson;
     @ManyToOne
