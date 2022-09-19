@@ -64,4 +64,10 @@ public class WalletAPI {
         requestRecharge.setPaymentMethod("Banking");
         return new ResponseEntity<>(requestRechargeService.save(requestRecharge),HttpStatus.OK);
     }
+    @GetMapping ("")
+    public ResponseEntity<Wallet> getWalletByUser (){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser appUser = appUserService.findByUserName(userDetails.getUsername());
+        return new ResponseEntity<>(walletService.findByIdUser(appUser.getIdUser()),HttpStatus.OK);
+    }
 }
