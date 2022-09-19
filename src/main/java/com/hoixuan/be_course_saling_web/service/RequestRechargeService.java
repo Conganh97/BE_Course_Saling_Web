@@ -30,6 +30,6 @@ public class RequestRechargeService {
         return iRequestRechargeRepo.save(requestRecharge);
     }
     public List<RequestRecharge> getAllByUser (long idUser){
-        return (List<RequestRecharge>) iRequestRechargeRepo.findByAppUserIdUser(idUser);
+        return iRequestRechargeRepo.findByAppUserIdUser(idUser);
     }
 }

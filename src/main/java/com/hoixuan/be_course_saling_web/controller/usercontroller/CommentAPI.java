@@ -57,6 +57,7 @@ public class CommentAPI {
     @PostMapping("/editCmt/{idCmt}")
     public ResponseEntity<Comment> editCmt(@PathVariable long idCmt, @RequestBody Comment comment) {
             comment.setIdComment(idCmt);
+            comment.setTimeCmt(commentService.findById(idCmt).getTimeCmt());
             comment = commentService.saveCMT(comment);
             return new ResponseEntity<>(comment, HttpStatus.OK);
         }
