@@ -14,4 +14,6 @@ public interface IRequestRechargeRepo extends CrudRepository<RequestRecharge,Lon
     List<RequestRecharge> findByAppUserIdUser(@Param("idUser") long idUser);
     @Query(nativeQuery = true,value = "select * from request_recharge order by create_at desc ")
     List<RequestRecharge> getAll ();
+
+    RequestRecharge findByIdRequest(long idReq);
 }

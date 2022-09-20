@@ -18,7 +18,7 @@ public interface IMyCourseRepo extends CrudRepository<MyCourse, Long> {
 
     MyCourse findMyCourseByIdMyCourse (long idMyCourse);
 
-    List<MyCourse> findMyCourseByStatusMyCourse(boolean isExpire);
+    List<MyCourse> findAllByAppUserIdUserAndAndStatusMyCourse(long idUser,boolean isExpire);
 
 
 }

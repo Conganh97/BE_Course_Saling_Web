@@ -24,6 +24,7 @@ public class BillUserAPI {
     @Autowired
     AppUserService appUserService;
 
+
     @GetMapping("/billUser")
     public ResponseEntity<List<Bill>> getAllUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
