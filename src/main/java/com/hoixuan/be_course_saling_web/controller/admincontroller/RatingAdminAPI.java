@@ -2,6 +2,7 @@ package com.hoixuan.be_course_saling_web.controller.admincontroller;
 
 import com.hoixuan.be_course_saling_web.model.Course;
 import com.hoixuan.be_course_saling_web.model.Rating;
+import com.hoixuan.be_course_saling_web.service.CourseService;
 import com.hoixuan.be_course_saling_web.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,8 @@ import java.util.List;
 public class RatingAdminAPI {
     @Autowired
     RatingService ratingService;
+    @Autowired
+    CourseService courseService;
     @GetMapping("/rating/{id}")
     public ResponseEntity<List<Rating>>getAllByIdCourse(@PathVariable long id){
         return new ResponseEntity<>(ratingService.getAllByCourseId(id), HttpStatus.OK);
@@ -37,7 +40,21 @@ public class RatingAdminAPI {
     }
     @GetMapping("/rating/delete/{id}")
     public Rating deleteById(@PathVariable long id){
+        Rating rating = ratingService.findById(id);
+        Course course = courseService.findByIdCourse(rating.getCourse().getIdCourse());
         ratingService.delete(id);
+        List<Rating> ratings = ratingService.getAllByCourseId(rating.getCourse().getIdCourse());
+        int totalRating = 0;
+        for (Rating r : ratings) {
+            totalRating += r.getNumStar();
+        }
+        if (totalRating == 0) {
+            course.setNumRating(5);
+        }else {
+            course.setNumRating(totalRating / ratings.size());
+        }
+
+        courseService.save(course);
         return new Rating();
     }
     @GetMapping("/allRating/{page}")

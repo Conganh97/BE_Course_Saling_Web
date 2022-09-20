@@ -76,6 +76,8 @@ public class MyCourseService {
     }
 
     public List<MyCourse> findByExpire(Boolean isExpire){
-       return iMyCourseRepo.findMyCourseByStatusMyCourse(isExpire);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        long idUser = appUserService.findByUserName(userDetails.getUsername()).getIdUser();
+       return iMyCourseRepo.findAllByAppUserIdUserAndAndStatusMyCourse(idUser,isExpire);
     }
 }

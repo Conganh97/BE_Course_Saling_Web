@@ -70,10 +70,10 @@ public class UserAPI {
             if (changePassword.getNewPassword().equals(changePassword.getConfirmNewPassword())) {
                 newPassword = changePassword.getNewPassword();
             } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.OK);
             }
         } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         appUser.setPassword(newPassword);
         appUserService.save(appUser);

@@ -18,7 +18,7 @@ public class RequestRechargeService {
     AppUserService appUserService;
 
     public RequestRecharge findById(long idReq){
-        return iRequestRechargeRepo.findById(idReq).get();
+        return iRequestRechargeRepo.findByIdRequest(idReq);
     }
     public List<RequestRecharge> getAll() {
         return (List<RequestRecharge>) iRequestRechargeRepo.findAll();
